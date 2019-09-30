@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
+import org.json.JSONObject;
 
 public class Cliente {
     static DataInputStream in;                  // cria um duto de entrada
