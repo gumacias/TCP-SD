@@ -1,3 +1,4 @@
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -6,6 +7,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Cliente {
+
     static DataInputStream in;                  // cria um duto de entrada
     static DataOutputStream out;                     // cria um duto de saída
 
@@ -19,9 +21,9 @@ public class Cliente {
         Socket ClientSocket = null;
 
         try {
-        /* cria o socket do cliente para conexao com o servidor
+            /* cria o socket do cliente para conexao com o servidor
            que esta na maquina 127.0.0.1 operando na porta 7000 */
-
+            
             ClientSocket = new Socket("localhost", 22345);
             /* associa um buffer de entrada e outro de saida ao socket */
             in = new DataInputStream(ClientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
@@ -34,8 +36,8 @@ public class Cliente {
                 String enviar = input.next();
                 out.writeUTF(enviar);
                 if (enviar.equals("fim")) {
-                   ClientSocket.close();
-                   break;
+                    ClientSocket.close();
+                    break;
                 }
                 String receber = in.readUTF();
                 System.out.println("Servidor retornou: " + receber);
@@ -49,8 +51,5 @@ public class Cliente {
         } catch (Exception e) {
             System.out.println("Falha na conexão com o servidor");
         }
-        
-        
-
     }
 }
