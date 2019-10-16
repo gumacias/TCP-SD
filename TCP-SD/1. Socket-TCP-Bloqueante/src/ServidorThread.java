@@ -12,35 +12,31 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import sun.tools.asm.TryData;
+
 
 public class ServidorThread extends Thread {
 
     protected Socket clientSocket;
-
+    JSONObject my_obj = new JSONObject();
+    JSONArray nomes = new JSONArray();
+    JSONArray ips = new JSONArray();
+    int clients = 0;
+    
     public static void main(String args[]) {
-        //Rotina para entrada de dados via teclado
-        /*DataInputStream teclado = new DataInputStream(System.in);
-
-        System.out.println("Servidor carregado na porta 7000");
-        
-        String line;                        // string para conter informações transferidas
-        String verificacao;                 // string psrs encerramento do servidor
-        DataInputStream is;                 // cria um duto de entrada
-        DataOutputStream os;                     // cria um duto de saída
-        Socket clientSocket = null;         // cria o socket do cliente*/
         ServerSocket echoServer = null; // cria o socket do servidor
-
+        Socket svr = null;
         try {
             echoServer = new ServerSocket(22345);  // *** socket() + bind()  // instancia o socket do servidor na porta 9999. 
             try {
                 while (true) {
-                    new ServidorThread(echoServer.accept());
+                    System.out.println("Aguardando conexao");
+                    svr = echoServer.accept();
+                    new ServidorThread(svr);
                 }
             } catch (IOException e) {
                 System.err.println("Accept failed.");
-                System.exit(1);
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -60,7 +56,6 @@ public class ServidorThread extends Thread {
         String verificacao;                 // string psrs encerramento do servidor
         DataInputStream is;                 // cria um duto de entrada
         DataOutputStream os;                     // cria um duto de saída
-        JSONObject my_obj = new JSONObject();
         Writer output = null;
         File file = new File("X.json");
 
@@ -69,30 +64,29 @@ public class ServidorThread extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(ServidorThread.class.getName()).log(Level.SEVERE, null, ex);
         }
-        while (true) {
-            try {
-                System.out.println("Aguardando conexao");
-
-                is = new DataInputStream(clientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
-                os = new DataOutputStream(clientSocket.getOutputStream());       // aponta o duto de saída para o socket do cliente
-                //os.writeUTF("Servidor responde: Conexao efetuada com o servidor");
-                while (true) {
-                    line = is.readUTF(); // *** recv()  // recebe dados do cliente
-                    my_obj.put("ip", clientSocket.getLocalSocketAddress().toString());
-                    my_obj.put("nome", line);
-                    my_obj.write(output);
-                    output.close();
-
-                    os.writeUTF(line.toUpperCase());  //*** send()   // envia dados para o cliente
-                    if (line.equals("fim")) // recebendo 'fim' possibilita o encerramento do servidor
-                    {
-                        clientSocket.close();
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println(e);
+        try {
+            is = new DataInputStream(clientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
+            os = new DataOutputStream(clientSocket.getOutputStream());       // aponta o duto de saída para o socket do cliente
+            
+            String ip = clientSocket.getRemoteSocketAddress().toString();
+            String nome;
+            
+            line = is.readUTF(); // *** recv()  // recebe dados do cliente
+            ips.put(ips.length(), ip);
+            nome = line;
+            nomes.put(nomes.length(), nome);
+            clients++;
+            my_obj.put("ip", ips);
+            my_obj.put("nome", nomes);
+            my_obj.write(output);
+            output.close();
+            while (true) {
+                line = is.readUTF();
+                System.out.println("Cliente enviou: " + line);
+                os.writeUTF(line.toUpperCase());
             }
+        } catch (IOException e) {
+            System.out.println(e);
         }
 
     }

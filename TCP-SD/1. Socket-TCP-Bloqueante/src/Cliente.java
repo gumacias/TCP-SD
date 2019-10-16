@@ -23,15 +23,19 @@ public class Cliente {
            que esta na maquina 127.0.0.1 operando na porta 7000 */
 
             ClientSocket = new Socket("localhost", 22345);
+            System.out.print("Digite o nome: ");
+            String enviar = input.next();
             /* associa um buffer de entrada e outro de saida ao socket */
             in = new DataInputStream(ClientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
             out = new DataOutputStream(ClientSocket.getOutputStream());       // aponta o duto de saída para o socket do cliente
-
+            
+            out.writeUTF(enviar);   //envia o nome para login
+            
             //aguarda uma digitação pelo teclado para enviar ao servidor
             //System.out.println(in.readLine());
             while (true) {
                 System.out.print("Digite: ");
-                String enviar = input.next();
+                enviar = input.next();
                 out.writeUTF(enviar);
                 if (enviar.equals("fim")) {
                    ClientSocket.close();
@@ -42,15 +46,11 @@ public class Cliente {
             }
         } catch (UnknownHostException e) {
             System.err.println("Host desconhecido: ");
-            System.exit(1);
         } catch (IOException e) {
             System.err.println("IP ou Porta não existe ");
-            System.exit(1);
         } catch (Exception e) {
             System.out.println("Falha na conexão com o servidor");
         }
-        
-        
 
     }
 }
