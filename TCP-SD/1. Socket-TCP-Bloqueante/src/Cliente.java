@@ -16,6 +16,10 @@ public class Cliente {
         //Rotina para entrada de dados via teclado
         //DataInputStream teclado = new DataInputStream(System.in);
         Scanner input = new Scanner(System.in);
+        System.out.print("Digite o ip do servidor: ");
+        String host = input.next();
+        System.out.print("Digite a porta do servidor: ");
+        int port = input.nextInt();
         
         //Geração do socket
         Socket ClientSocket = null;
@@ -24,16 +28,19 @@ public class Cliente {
             /* cria o socket do cliente para conexao com o servidor
            que esta na maquina 127.0.0.1 operando na porta 7000 */
             
-            ClientSocket = new Socket("localhost", 22345);
+            ClientSocket = new Socket(host, port);
+            System.out.print("Digite o nome: ");
+            String enviar = input.next();
             /* associa um buffer de entrada e outro de saida ao socket */
             in = new DataInputStream(ClientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
             out = new DataOutputStream(ClientSocket.getOutputStream());       // aponta o duto de saída para o socket do cliente
-
+            
+            out.writeUTF(enviar);
             //aguarda uma digitação pelo teclado para enviar ao servidor
             //System.out.println(in.readLine());
             while (true) {
                 System.out.print("Digite: ");
-                String enviar = input.next();
+                enviar = input.next();
                 out.writeUTF(enviar);
                 if (enviar.equals("fim")) {
                     ClientSocket.close();

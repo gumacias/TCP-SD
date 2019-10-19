@@ -24,12 +24,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import java.util.Locale;
+import java.util.Iterator;
 
 /**
  * Convert an HTTP header to a JSONObject and back.
  * @author JSON.org
- * @version 2015-12-09
+ * @version 2010-12-24
  */
 public class HTTP {
 
@@ -74,7 +74,7 @@ public class HTTP {
         String         token;
 
         token = x.nextToken();
-        if (token.toUpperCase(Locale.ROOT).startsWith("HTTP")) {
+        if (token.toUpperCase().startsWith("HTTP")) {
 
 // Response
 
@@ -125,7 +125,9 @@ public class HTTP {
      *  information.
      */
     public static String toString(JSONObject jo) throws JSONException {
-        StringBuilder       sb = new StringBuilder();
+        Iterator     keys = jo.keys();
+        String       string;
+        StringBuffer sb = new StringBuffer();
         if (jo.has("Status-Code") && jo.has("Reason-Phrase")) {
             sb.append(jo.getString("HTTP-Version"));
             sb.append(' ');
@@ -144,15 +146,14 @@ public class HTTP {
             throw new JSONException("Not enough material for an HTTP header.");
         }
         sb.append(CRLF);
-        // Don't use the new entrySet API to maintain Android support
-        for (final String key : jo.keySet()) {
-            String value = jo.optString(key);
-            if (!"HTTP-Version".equals(key)      && !"Status-Code".equals(key) &&
-                    !"Reason-Phrase".equals(key) && !"Method".equals(key) &&
-                    !"Request-URI".equals(key)   && !JSONObject.NULL.equals(value)) {
-                sb.append(key);
+        while (keys.hasNext()) {
+            string = keys.next().toString();
+            if (!string.equals("HTTP-Version")      && !string.equals("Status-Code") &&
+                    !string.equals("Reason-Phrase") && !string.equals("Method") &&
+                    !string.equals("Request-URI")   && !jo.isNull(string)) {
+                sb.append(string);
                 sb.append(": ");
-                sb.append(jo.optString(key));
+                sb.append(jo.getString(string));
                 sb.append(CRLF);
             }
         }
