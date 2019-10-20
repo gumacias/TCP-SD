@@ -2,12 +2,12 @@ package Servidor;
 
 // servidor de eco
 // recebe uma linha e ecoa a linha recebida.
-
 import Cliente.Protocolo;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,37 +17,33 @@ import java.util.ArrayList;
 public class ServidorThread extends Thread {
 
     public Socket clientSocket;
-    private File file = new File("X.json");
+    private ArrayList<InfoCliente> lista;
 
     public static void main(String args[]) {
-        //Rotina para entrada de dados via teclado
-        /*DataInputStream teclado = new DataInputStream(System.in);
-
-        System.out.println("Servidor carregado na porta 7000");
-        
-        String line;                        // string para conter informações transferidas
-        String verificacao;                 // string psrs encerramento do servidor
-        DataInputStream is;                 // cria um duto de entrada
-        DataOutputStream os;                     // cria um duto de saída
-        Socket clientSocket = null;         // cria o socket do cliente*/
-        ServerSocket echoServer = null; // cria o socket do servidor
-
+        ServerSocket serverSocket = null; // cria o socket do servidor
+        System.out.println("Conexão Socket criada.");
         try {
-            echoServer = new ServerSocket(22345);  // *** socket() + bind()  // instancia o socket do servidor na porta 9999. 
+            serverSocket = new ServerSocket(22345);  // *** socket() + bind()  // instancia o socket do servidor na porta 9999. 
             try {
                 while (true) {
-                    System.out.println("Aguardando conexao");
-                    ServidorThread servidorThread;
-                    servidorThread = new ServidorThread(echoServer.accept());
+                    System.out.println("Aguardando conexão");
+                    new ServidorThread(serverSocket.accept());
                 }
             } catch (IOException e) {
-                System.err.println("Accept failed.");
+                System.err.println("Conexão falhou");
                 System.exit(1);
             }
         } catch (IOException e) {
-            System.out.println(e);
+            System.err.println("Não foi possível escutar a porta: 22345.");
+            System.exit(1);
+        } finally {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                System.err.println("Não foi possível fechar a porta: 22345.");
+                System.exit(1);
+            }
         }
-
     } // main
 
     private ServidorThread(Socket clientSoc) {
@@ -57,27 +53,32 @@ public class ServidorThread extends Thread {
 
     @Override
     public void run() {
-        DataInputStream teclado = new DataInputStream(System.in);
-
-        String line;                        // string para conter informações transferidas
-        DataInputStream is;                 // cria um duto de entrada
-        DataOutputStream os;                     // cria um duto de saída
+        String line; // string para conter informações transferidas
+        DataInputStream is; // cria um duto de entrada
+        DataOutputStream os; // cria um duto de saída
         Protocolo protocol;
         FileWriter writer;
+        FileReader reader;
         Gson gson = new Gson();
-        ArrayList<InfoCliente> lista = new ArrayList();
-
         try {
             is = new DataInputStream(clientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
             os = new DataOutputStream(clientSocket.getOutputStream());       // aponta o duto de saída para o socket do cliente
             while ((line = is.readUTF()) != null) {
-                writer = new FileWriter("X.json");
+                reader = new FileReader("X.json");
+                lista = (ArrayList<InfoCliente>) gson.fromJson(reader,
+                        new TypeToken<ArrayList<InfoCliente>>() {
+                        }.getType());
+                if (lista == null) {
+                    lista = new ArrayList();
+                }
                 protocol = gson.fromJson(line, Protocolo.class);
-                lista.add(new InfoCliente(clientSocket.getRemoteSocketAddress().toString(), protocol.getNome(), protocol.getAction()));
+                writer = new FileWriter("X.json");
+                lista.add(new InfoCliente(clientSocket.getLocalSocketAddress().toString(),
+                        protocol.getNome(), protocol.getAction()));
                 switch (protocol.getAction()) {
-                    // recebendo 'fim' possibilita o encerramento do servidor
                     case "login":
                         os.writeUTF("Conectado");
+                        os.writeUTF(gson.toJson(lista));
                         writer.write(gson.toJson(lista));
                         writer.close();
                         break;
@@ -92,11 +93,11 @@ public class ServidorThread extends Thread {
                         break;
                     default:
                         System.out.println("Cliente enviou: " + line);
+                        break;
                 }
             }
         } catch (IOException e) {
             System.out.println(e);
         }
-
     }
 } // classe
