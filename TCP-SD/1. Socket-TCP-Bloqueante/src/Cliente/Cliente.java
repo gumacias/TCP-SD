@@ -18,14 +18,14 @@ public class Cliente {
         DataOutputStream out = null;                     // cria um duto de saída
 
         Scanner input = new Scanner(System.in);
-        String serverHostname = new String("192.168.0.103");
-        Integer port = 22345;
+        String serverHostname = new String("10.20.8.144");
+        Integer port = 22000;
 
         if (args.length > 0) {
             serverHostname = args[0];
         }
         System.out.println("Attemping to connect to host "
-                + serverHostname + " on port" + port);
+                + serverHostname + " on port " + port);
 
         //Geração do socket
         Socket clientSocket = null;
@@ -51,16 +51,16 @@ public class Cliente {
         String receber;
 
         while ((receber = in.readUTF()) != null) {
-            if (!input.next().equals("fim")) {
-                System.out.println("Servidor retornou: " + receber);
-            } else {
+            System.out.println("Servidor retornou: " + receber);
+            if (input.next().equals("fim")) {
                 protocolo.setAction("logout");
                 enviar = gson.toJson(protocolo);
                 out.writeUTF(enviar);
+                System.out.println("Servidor retornou: " + receber);
                 break;
             }
         }
-        
+
         clientSocket.close();
         out.close();
         in.close();

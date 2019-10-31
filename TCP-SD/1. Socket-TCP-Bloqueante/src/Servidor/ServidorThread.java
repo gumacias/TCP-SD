@@ -23,11 +23,12 @@ public class ServidorThread extends Thread {
         ServerSocket serverSocket = null; // cria o socket do servidor
         System.out.println("Conexão Socket criada.");
         try {
-            serverSocket = new ServerSocket(22345);  // *** socket() + bind()  // instancia o socket do servidor na porta 9999. 
+            serverSocket = new ServerSocket(22003);  // *** socket() + bind()  // instancia o socket do servidor na porta 9999. 
             try {
                 while (true) {
                     System.out.println("Aguardando conexão");
                     new ServidorThread(serverSocket.accept());
+                    System.out.println("Cliente de ip " + serverSocket.getInetAddress().getHostAddress() + " conectado.");
                 }
             } catch (IOException e) {
                 System.err.println("Conexão falhou");
@@ -73,7 +74,7 @@ public class ServidorThread extends Thread {
                 }
                 protocol = gson.fromJson(line, Protocolo.class);
                 writer = new FileWriter("X.json");
-                lista.add(new InfoCliente(clientSocket.getLocalSocketAddress().toString(),
+                lista.add(new InfoCliente(clientSocket.getInetAddress().toString(),
                         protocol.getNome(), protocol.getAction()));
                 switch (protocol.getAction()) {
                     case "login":
