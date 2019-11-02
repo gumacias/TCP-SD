@@ -18,7 +18,7 @@ public class ServidorTela implements ActionListener{
     
     JFrame tela = new JFrame();
     JPanel painel = new JPanel();
-    JLabel porta = new JLabel ("Porta:" );
+    JLabel porta = new JLabel ("Entre com uma porta:" );
     JTextField textPorta = new JTextField("22345",5);
     JButton botaoOk = new JButton("Ok");
     
@@ -27,6 +27,8 @@ public class ServidorTela implements ActionListener{
         tela.setTitle ("Server");
         tela.setSize(300,90);
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //alinha da esquerda para dir
         painel.setLayout(new FlowLayout (FlowLayout.CENTER, 20, 20));
         tela.add(porta);
         painel.add(textPorta);
@@ -43,7 +45,7 @@ public class ServidorTela implements ActionListener{
     public void ActionPerformed(ActionEvent e){
             if ((e.getSource()== botaoOk) && (!textPorta.getText().equals(""))){
                 try{
-                    new server (Integer.parseInt(textPorta.getText()));
+                    new servidor (Integer.parseInt(textPorta.getText()));
             }
                 catch(NumberFormatException e1){
                     JOptionPane.showMessageDialog (null, "Erro");
@@ -60,7 +62,7 @@ public class ServidorTela implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     
