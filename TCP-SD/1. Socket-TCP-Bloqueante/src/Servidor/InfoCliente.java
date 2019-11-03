@@ -11,38 +11,38 @@ package Servidor;
  * @author bruno
  */
 public class InfoCliente {
-    private String IP;
-    private String Nome;
-    private String Action;
+    private String ip;
+    private String nome;
+    private String action;
 
-    public InfoCliente(String IP, String Nome, String Action) {
-        this.IP = IP;
-        this.Nome = Nome;
-        this.Action = Action;
+    public InfoCliente(String ip, String nome, String action) {
+        this.ip = ip;
+        this.nome = nome;
+        this.action = action;
     }
 
     public String getIP() {
-        return IP;
+        return ip;
     }
 
-    public void setIP(String IP) {
-        this.IP = IP;
+    public void setIP(String ip) {
+        this.ip = ip;
     }
 
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
-    public void setNome(String Nome) {
-        this.Nome = Nome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getAction() {
-        return Action;
+        return action;
     }
 
-    public void setAction(String Action) {
-        this.Action = Action;
+    public void setAction(String action) {
+        this.action = action;
     }
     
     
