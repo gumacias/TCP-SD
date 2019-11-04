@@ -7,6 +7,7 @@ package Interface;
 
 import Cliente.Cliente;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
 
 /**
  *
@@ -14,12 +15,26 @@ import java.awt.CardLayout;
  */
 public class LoginCliente extends javax.swing.JFrame {
 
+    Cliente cliente = null;
     /**
      * Creates new form LoginCliente
      */
     public LoginCliente() {
+        //painel.setBorder(BorderFactory.createTitledBorder("Borda"));
         initComponents();
     }
+    
+    private Runnable getBroadcast = new Runnable() {
+        public void run() {
+            while(true)
+            {
+                if(cliente.flagMsg)
+                {
+                    txtChat.append(txtMensagem.getText()+"\n");
+                }
+            }
+        }
+    };
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -48,7 +63,10 @@ public class LoginCliente extends javax.swing.JFrame {
         btEnviar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
         lblSaud = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scrollServicos = new javax.swing.JScrollPane();
+        pnServicos = new javax.swing.JPanel();
+        pnClientes = new javax.swing.JPanel();
+        lblOnline = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,27 +109,28 @@ public class LoginCliente extends javax.swing.JFrame {
         pnLoginLayout.setHorizontalGroup(
             pnLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnLoginLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(pnLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnLoginLayout.createSequentialGroup()
-                        .addComponent(lblCliente)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNome))
+                        .addContainerGap()
+                        .addGroup(pnLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnLoginLayout.createSequentialGroup()
+                                .addComponent(lblIP1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtPorta))
+                            .addGroup(pnLoginLayout.createSequentialGroup()
+                                .addComponent(lblCliente)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnLoginLayout.createSequentialGroup()
+                                .addComponent(lblIP)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtIp))))
                     .addGroup(pnLoginLayout.createSequentialGroup()
-                        .addComponent(lblIP1)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtPorta))
-                    .addGroup(pnLoginLayout.createSequentialGroup()
-                        .addComponent(lblIP)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtIp)))
-                .addContainerGap())
-            .addGroup(pnLoginLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(btConectar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 167, Short.MAX_VALUE)
-                .addComponent(btCancelar)
-                .addGap(128, 128, 128))
+                        .addGap(120, 120, 120)
+                        .addComponent(btConectar)
+                        .addGap(155, 155, 155)
+                        .addComponent(btCancelar)))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         pnLoginLayout.setVerticalGroup(
             pnLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,14 +147,14 @@ public class LoginCliente extends javax.swing.JFrame {
                 .addGroup(pnLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIP1)
                     .addComponent(txtPorta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
                 .addGroup(pnLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btConectar)
                     .addComponent(btCancelar))
                 .addGap(50, 50, 50))
         );
 
-        pnTela.add(pnLogin, "card2");
+        pnTela.add(pnLogin, "login");
 
         txtChat.setEditable(false);
         txtChat.setColumns(20);
@@ -152,6 +171,11 @@ public class LoginCliente extends javax.swing.JFrame {
         btSair.setBackground(new java.awt.Color(255, 0, 0));
         btSair.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btSair.setText("Logout");
+        btSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnChatLayout = new javax.swing.GroupLayout(pnChat);
         pnChat.setLayout(pnChatLayout);
@@ -159,33 +183,45 @@ public class LoginCliente extends javax.swing.JFrame {
             pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnChatLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(pnChatLayout.createSequentialGroup()
-                        .addComponent(scrollChat, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(15, Short.MAX_VALUE))
-                    .addGroup(pnChatLayout.createSequentialGroup()
-                        .addGroup(pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnChatLayout.createSequentialGroup()
-                                .addComponent(txtMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btEnviar)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(txtMensagem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btEnviar))
+                    .addComponent(scrollChat, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(btSair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
         pnChatLayout.setVerticalGroup(
             pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnChatLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollChat, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollChat, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btEnviar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btSair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         lblSaud.setText("Bem Vindo!");
+
+        scrollServicos.setViewportView(pnServicos);
+
+        pnClientes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout pnClientesLayout = new javax.swing.GroupLayout(pnClientes);
+        pnClientes.setLayout(pnClientesLayout);
+        pnClientesLayout.setHorizontalGroup(
+            pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 151, Short.MAX_VALUE)
+        );
+        pnClientesLayout.setVerticalGroup(
+            pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        lblOnline.setText("Clientes Online :");
 
         javax.swing.GroupLayout pnPrincipalLayout = new javax.swing.GroupLayout(pnPrincipal);
         pnPrincipal.setLayout(pnPrincipalLayout);
@@ -195,22 +231,28 @@ public class LoginCliente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
-                        .addComponent(lblSaud)
-                        .addGap(0, 142, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(scrollServicos, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSaud))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblOnline)
+                    .addComponent(pnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnPrincipalLayout.setVerticalGroup(
             pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnPrincipalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSaud)
+                    .addComponent(lblOnline))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnPrincipalLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblSaud)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1)))
+                    .addComponent(scrollServicos)
+                    .addComponent(pnClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -224,9 +266,7 @@ public class LoginCliente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnTela, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(pnTela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -236,7 +276,7 @@ public class LoginCliente extends javax.swing.JFrame {
         if(!txtPorta.getText().equals("") && !txtIp.getText().equals("")&&
                 !txtNome.getText().equals(""))
         {
-            Cliente cliente = new Cliente(txtNome.getText(),
+            cliente = new Cliente(txtNome.getText(),
                     txtIp.getText(), Integer.parseInt(txtPorta.getText()));
             CardLayout cl = (CardLayout) pnTela.getLayout();
             cl.show(pnTela, "main");
@@ -252,15 +292,21 @@ public class LoginCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviarActionPerformed
-        if(txtMensagem.getText().equals(""))
+        if(!txtMensagem.getText().equals(""))
         {
-        }else
-        {
-            txtChat.append(txtMensagem.getText()+"\n");
+            cliente.sendMessage(txtMensagem.getText());
             txtMensagem.setText("");
         }
         btEnviar.transferFocusBackward();
     }//GEN-LAST:event_btEnviarActionPerformed
+
+    private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
+        CardLayout cl = (CardLayout) pnTela.getLayout();
+        cl.show(pnTela, "login");
+        cliente.logout();
+        cliente = null;
+        txtChat.setText("");
+    }//GEN-LAST:event_btSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,7 +334,7 @@ public class LoginCliente extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(LoginCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -302,16 +348,19 @@ public class LoginCliente extends javax.swing.JFrame {
     private javax.swing.JButton btConectar;
     private javax.swing.JButton btEnviar;
     private javax.swing.JButton btSair;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblIP;
     private javax.swing.JLabel lblIP1;
+    private javax.swing.JLabel lblOnline;
     private javax.swing.JLabel lblSaud;
     private javax.swing.JPanel pnChat;
+    private javax.swing.JPanel pnClientes;
     private javax.swing.JPanel pnLogin;
     private javax.swing.JPanel pnPrincipal;
+    private javax.swing.JPanel pnServicos;
     private javax.swing.JPanel pnTela;
     private javax.swing.JScrollPane scrollChat;
+    private javax.swing.JScrollPane scrollServicos;
     private javax.swing.JTextArea txtChat;
     private javax.swing.JTextField txtIp;
     private javax.swing.JTextField txtMensagem;

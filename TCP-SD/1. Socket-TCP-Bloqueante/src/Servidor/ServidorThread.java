@@ -19,9 +19,12 @@ public class ServidorThread extends Thread {
 
     public Socket clientSocket;
     private ArrayList<InfoCliente> lista;
+    private ArrayList<DataOutputStream> broadcast = new ArrayList();;
+    int porta;
     
     public ServidorThread(int porta)
     {
+        this.porta = porta;
         Writer writer;
         try {
             writer = new FileWriter("X.json");
@@ -30,23 +33,29 @@ public class ServidorThread extends Thread {
         } catch (IOException ex) {
             System.out.println("Erro ao criar o arquivo Json");
         }
-        try {
-            ServerSocket serverSocket = new ServerSocket(22345);  // *** socket() + bind()  // instancia o socket do servidor na porta 9999. 
+        new Thread(openServer).start();
+    }
+    
+    private Runnable openServer = new Runnable() {
+        public void run() {
             try {
-                while (true) {
-                    System.out.println("Aguardando conexão");
-                    new ServidorThread(serverSocket.accept());
-                    System.out.println("Cliente de ip " + serverSocket.getInetAddress().getHostAddress() + " conectado.");
+                ServerSocket serverSocket = new ServerSocket(porta);  // *** socket() + bind()  // instancia o socket do servidor na porta 9999. 
+                try {
+                    while (true) {
+                        System.out.println("Aguardando conexão");
+                        new ServidorThread(serverSocket.accept());
+                        System.out.println("Cliente conectado.");
+                    }
+                } catch (IOException e) {
+                    System.err.println("Conexão falhou");
+                    System.exit(0);
                 }
             } catch (IOException e) {
-                System.err.println("Conexão falhou");
-                System.exit(1);
+                System.err.println("Não foi possível abrir na porta" + porta);
+                System.exit(0);
             }
-        } catch (IOException e) {
-            System.err.println("Não foi possível escutar a porta: 22345.");
-            System.exit(1);
         }
-    }
+    };
 
     private ServidorThread(Socket clientSoc) {
         clientSocket = clientSoc;
@@ -65,7 +74,7 @@ public class ServidorThread extends Thread {
         try {
             is = new DataInputStream(clientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
             os = new DataOutputStream(clientSocket.getOutputStream());       // aponta o duto de saída para o socket do cliente
-            while ((line = is.readUTF()) != null) {
+            broadcast.add(os);
                 reader = new FileReader("X.json");
                 lista = (ArrayList<InfoCliente>) gson.fromJson(reader,
                         new TypeToken<ArrayList<InfoCliente>>() {
@@ -73,10 +82,14 @@ public class ServidorThread extends Thread {
                 if (lista == null) {
                     lista = new ArrayList();
                 }
+                line = is.readUTF();
                 protocol = gson.fromJson(line, Protocolo.class);
+                lista.add(new InfoCliente(protocol.getNome(), 
+                        clientSocket.getInetAddress().toString().replace("/", ""),
+                        clientSocket.getPort()/*, protocol.getAction()*/));
+                
+            do {
                 writer = new FileWriter("X.json");
-                lista.add(new InfoCliente(clientSocket.getInetAddress().toString().replace("/", ""),
-                        protocol.getNome(), protocol.getAction()));
                 switch (protocol.getAction()) {
                     case "login":
                         os.writeUTF("Conectado");
@@ -86,20 +99,37 @@ public class ServidorThread extends Thread {
                         break;
                     case "logout":
                         os.writeUTF("Tchau!");
-                        lista.stream().filter((infoCliente) -> (infoCliente.getIP().equals(clientSocket.getInetAddress().toString()))).forEachOrdered((infoCliente) -> {
+                        InfoCliente aux = null;
+                        /*for (InfoCliente cliente : lista) {
+                            if (cliente.getIP().equals(clientSocket.getInetAddress().toString().replace("/", ""))
+                                    && cliente.getPorta() == clientSocket.getPort() ) 
+                            {
+                                aux = cliente;
+                            }
+                        }                   
+                        lista.remove(aux);*/
+                        lista.stream().filter((infoCliente) -> (infoCliente.getIP().equals(clientSocket.getInetAddress().toString().replace("/", "")))).forEachOrdered((infoCliente) -> {
                             lista.remove(infoCliente);
                         });
+                        System.out.println(gson.toJson(lista));
                         writer.write(gson.toJson(lista));
                         writer.close();
                         clientSocket.close();
                         break;
+                    case "broadcast":
+                            for (DataOutputStream cliente : broadcast) {
+                                cliente.writeUTF(protocol.getNome());
+                            }
+                            break;
                     default:
                         System.out.println("Cliente enviou: " + line);
                         break;
                 }
-            }
+                line = is.readUTF();
+                protocol = gson.fromJson(line, Protocolo.class);
+            }while(true);
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("Cliente desconectado");
         }
     }
 } // classe

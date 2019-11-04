@@ -11,14 +11,16 @@ package Servidor;
  * @author bruno
  */
 public class InfoCliente {
-    private String ip;
     private String nome;
-    private String action;
+    private String ip;
+    //private String action;
+    private int porta;
 
-    public InfoCliente(String ip, String nome, String action) {
+    public InfoCliente(String nome, String ip, int porta/*, String action*/) {
         this.ip = ip;
         this.nome = nome;
-        this.action = action;
+        this.porta = porta;
+        //this.action = action;
     }
 
     public String getIP() {
@@ -36,14 +38,22 @@ public class InfoCliente {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
+    public int getPorta() {
+        return porta;
+    }
 
-    public String getAction() {
+    public void setPorta(int porta) {
+        this.porta = porta;
+    }
+
+    /*public String getAction() {
         return action;
     }
 
     public void setAction(String action) {
         this.action = action;
-    }
+    }*/
     
     
 }
