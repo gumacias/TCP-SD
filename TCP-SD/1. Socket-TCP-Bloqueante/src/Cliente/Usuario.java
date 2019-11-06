@@ -1,4 +1,4 @@
-package Servidor;
+package Cliente;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -10,17 +10,15 @@ package Servidor;
  *
  * @author bruno
  */
-public class InfoCliente {
+public class Usuario {
     private String nome;
     private String ip;
-    //private String action;
     private int porta;
 
-    public InfoCliente(String nome, String ip, int porta/*, String action*/) {
+    public Usuario(String nome, String ip, int porta) {
         this.ip = ip;
         this.nome = nome;
         this.porta = porta;
-        //this.action = action;
     }
 
     public String getIP() {
@@ -47,13 +45,4 @@ public class InfoCliente {
         this.porta = porta;
     }
 
-    /*public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }*/
-    
-    
 }

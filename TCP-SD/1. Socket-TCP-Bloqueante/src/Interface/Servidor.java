@@ -14,6 +14,8 @@ import java.awt.CardLayout;
  */
 public class Servidor extends javax.swing.JFrame {
 
+    ServidorThread servidor = null;
+    
     /**
      * Creates new form Servidor
      */
@@ -203,7 +205,7 @@ public class Servidor extends javax.swing.JFrame {
     private void btConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConectarActionPerformed
         if(!txtPorta.getText().equals(""))
         {
-            ServidorThread servidor = new ServidorThread(Integer.parseInt(txtPorta.getText()));
+            servidor = new ServidorThread(Integer.parseInt(txtPorta.getText()));
             CardLayout cl = (CardLayout) pnTela.getLayout();
             cl.show(pnTela, "main");
         }
@@ -214,11 +216,9 @@ public class Servidor extends javax.swing.JFrame {
     }//GEN-LAST:event_btConectarActionPerformed
 
     private void btEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviarActionPerformed
-        if(txtMensagem.getText().equals(""))
+        if(!txtMensagem.getText().equals(""))
         {
-        }else
-        {
-            txtChat.append(txtMensagem.getText()+"\n");
+            servidor.sendMessage(txtMensagem.getText());
             txtMensagem.setText("");
         }
         btEnviar.transferFocusBackward();

@@ -1,13 +1,12 @@
 package Cliente;
 
+import Servidor.Protocolo;
 import com.google.gson.Gson;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Cliente {
     DataInputStream in = null;                  // cria um duto de entrada
@@ -17,15 +16,6 @@ public class Cliente {
     boolean flagSair = false;
     public boolean flagMsg = false;
     private String msg = null;
-
-    public String getMsg() {
-        flagMsg = false;
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
     
     Gson gson = new Gson();
     Protocolo protocolo;
@@ -33,7 +23,7 @@ public class Cliente {
     
     public Cliente(String nome, String serverHostname, int port)
     {
-        protocolo = new Protocolo(nome, "login");
+        protocolo = new Protocolo("login", nome);
         enviar = gson.toJson(protocolo);
         System.out.println("Attemping to connect to host "
                 + serverHostname + " on port " + port);
@@ -58,12 +48,12 @@ public class Cliente {
     
     public void sendMessage(String msg)
     {
-        protocolo.setAction("broadcast");
-        protocolo.setNome(msg);
+        protocolo = new Protocolo(msg);
         try {
             out.writeUTF(gson.toJson(protocolo));
         } catch (IOException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Desconectado do servidor");
+            //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -74,18 +64,23 @@ public class Cliente {
                     System.out.println("Servidor retornou: " + receber);
                     protocolo = gson.fromJson(receber, Protocolo.class);
                     switch (protocolo.getAction()) {
+                        case "listarUsuarios":
+                            
+                            break;
                         case "broadcast":
                             flagMsg = true;
                             msg = protocolo.getNome();
                             break;
+                        case "logout":
+                            System.out.println("2" +receber );
+                            return;
                         default:
                             break;
                     }
-                    if(flagSair)
-                        break;
                 }
             } catch (IOException ex) {
                 System.out.println("Desconectado do servidor");
+                //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
                 System.exit(0);
             }
         
@@ -105,7 +100,6 @@ public class Cliente {
         } catch (IOException ex) {
             System.out.println("Desconectado do servidor");
         }
-        this.flagSair = true;
         
     }
 

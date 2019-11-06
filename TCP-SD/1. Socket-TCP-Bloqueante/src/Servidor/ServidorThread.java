@@ -2,15 +2,12 @@ package Servidor;
 
 // servidor de eco
 // recebe uma linha e ecoa a linha recebida.
-import Cliente.Protocolo;
+import Cliente.Usuario;
+import Cliente.ListaClientes;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -18,21 +15,23 @@ import java.util.ArrayList;
 public class ServidorThread extends Thread {
 
     public Socket clientSocket;
-    private ArrayList<InfoCliente> lista;
-    private ArrayList<DataOutputStream> broadcast = new ArrayList();;
+    private ListaClientes lista = ListaClientes.getInstance();
+    private ArrayList<DataOutputStream> broadcast = lista.getSaida();
     int porta;
+    Protocolo protocol;
+    Gson gson = new Gson();
     
     public ServidorThread(int porta)
     {
         this.porta = porta;
-        Writer writer;
+        /*Writer writer;
         try {
-            writer = new FileWriter("X.json");
+            writer = new FileWriter("clientes.json");
             writer.write("[]");
             writer.close();
         } catch (IOException ex) {
             System.out.println("Erro ao criar o arquivo Json");
-        }
+        }*/
         new Thread(openServer).start();
     }
     
@@ -64,72 +63,72 @@ public class ServidorThread extends Thread {
 
     @Override
     public void run() {
+        Usuario user = null;
         String line; // string para conter informações transferidas
         DataInputStream is; // cria um duto de entrada
         DataOutputStream os; // cria um duto de saída
-        Protocolo protocol;
-        FileWriter writer;
-        FileReader reader;
-        Gson gson = new Gson();
+        //FileWriter writer;
+        //FileReader reader;
         try {
             is = new DataInputStream(clientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
             os = new DataOutputStream(clientSocket.getOutputStream());       // aponta o duto de saída para o socket do cliente
-            broadcast.add(os);
-                reader = new FileReader("X.json");
-                lista = (ArrayList<InfoCliente>) gson.fromJson(reader,
-                        new TypeToken<ArrayList<InfoCliente>>() {
-                        }.getType());
-                if (lista == null) {
-                    lista = new ArrayList();
-                }
-                line = is.readUTF();
-                protocol = gson.fromJson(line, Protocolo.class);
-                lista.add(new InfoCliente(protocol.getNome(), 
-                        clientSocket.getInetAddress().toString().replace("/", ""),
-                        clientSocket.getPort()/*, protocol.getAction()*/));
-                
+            
+            //reader = new FileReader("clientes.json");
+            line = is.readUTF();
+            protocol = gson.fromJson(line, Protocolo.class);
+            user = new Usuario( protocol.getNome(), 
+                    clientSocket.getInetAddress().toString().replace("/", ""),
+                    clientSocket.getPort() );
+            lista.add(user);
+            lista.add(os);
+            
             do {
-                writer = new FileWriter("X.json");
+                //writer = new FileWriter("clientes.json");
                 switch (protocol.getAction()) {
                     case "login":
-                        os.writeUTF("Conectado");
-                        os.writeUTF(gson.toJson(lista));
-                        writer.write(gson.toJson(lista));
-                        writer.close();
+                        protocol = new Protocolo("listarUsuarios", lista.getCliente() );
+                        //os.writeUTF("Conectado");
+                        for(DataOutputStream cliente : broadcast)
+                            cliente.writeUTF(gson.toJson(protocol));
+                        //writer.write(gson.toJson(lista));
+                        //writer.close();
                         break;
                     case "logout":
-                        os.writeUTF("Tchau!");
-                        InfoCliente aux = null;
-                        /*for (InfoCliente cliente : lista) {
-                            if (cliente.getIP().equals(clientSocket.getInetAddress().toString().replace("/", ""))
-                                    && cliente.getPorta() == clientSocket.getPort() ) 
-                            {
-                                aux = cliente;
-                            }
-                        }                   
-                        lista.remove(aux);*/
-                        lista.stream().filter((infoCliente) -> (infoCliente.getIP().equals(clientSocket.getInetAddress().toString().replace("/", "")))).forEachOrdered((infoCliente) -> {
-                            lista.remove(infoCliente);
-                        });
-                        System.out.println(gson.toJson(lista));
-                        writer.write(gson.toJson(lista));
-                        writer.close();
+                        protocol.setAction("logout");
+                        os.writeUTF(gson.toJson(protocol));
+                        lista.remove(user);
+                        lista.remove(os);
+                        //writer.write(gson.toJson(lista));
+                        //writer.close();
                         clientSocket.close();
-                        break;
+                        return;
                     case "broadcast":
-                            for (DataOutputStream cliente : broadcast) {
-                                cliente.writeUTF(protocol.getNome());
-                            }
-                            break;
+                        protocol = new Protocolo(user.getNome() + ": " + protocol.getMensagem());
+                        for(DataOutputStream cliente : broadcast)
+                            cliente.writeUTF(gson.toJson(protocol));
+                        break;
                     default:
                         System.out.println("Cliente enviou: " + line);
                         break;
                 }
                 line = is.readUTF();
+                if(line == null)
+                    break;
                 protocol = gson.fromJson(line, Protocolo.class);
-            }while(true);
-        } catch (IOException e) {
+            }while(line != null);
+        } catch (IOException ex) {
             System.out.println("Cliente desconectado");
-        }
+        } 
+    }
+    
+    public void sendMessage(String msg)
+    {
+        protocol = new Protocolo("Server: " + msg);
+        for(DataOutputStream cliente : broadcast)
+            try {
+                cliente.writeUTF(gson.toJson(protocol));
+            } catch (IOException ex) {
+                System.out.println("Cliente não conectado");
+            }
     }
 } // classe

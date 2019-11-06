@@ -24,18 +24,6 @@ public class LoginCliente extends javax.swing.JFrame {
         initComponents();
     }
     
-    private Runnable getBroadcast = new Runnable() {
-        public void run() {
-            while(true)
-            {
-                if(cliente.flagMsg)
-                {
-                    txtChat.append(txtMensagem.getText()+"\n");
-                }
-            }
-        }
-    };
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
