@@ -53,8 +53,9 @@ public class LoginCliente extends javax.swing.JFrame {
         lblSaud = new javax.swing.JLabel();
         scrollServicos = new javax.swing.JScrollPane();
         pnServicos = new javax.swing.JPanel();
-        pnClientes = new javax.swing.JPanel();
         lblOnline = new javax.swing.JLabel();
+        scrollClientes = new javax.swing.JScrollPane();
+        pnClientes = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -196,20 +197,20 @@ public class LoginCliente extends javax.swing.JFrame {
 
         scrollServicos.setViewportView(pnServicos);
 
-        pnClientes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblOnline.setText("Clientes Online :");
 
         javax.swing.GroupLayout pnClientesLayout = new javax.swing.GroupLayout(pnClientes);
         pnClientes.setLayout(pnClientesLayout);
         pnClientesLayout.setHorizontalGroup(
             pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 151, Short.MAX_VALUE)
+            .addGap(0, 153, Short.MAX_VALUE)
         );
         pnClientesLayout.setVerticalGroup(
             pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 278, Short.MAX_VALUE)
         );
 
-        lblOnline.setText("Clientes Online :");
+        scrollClientes.setViewportView(pnClientes);
 
         javax.swing.GroupLayout pnPrincipalLayout = new javax.swing.GroupLayout(pnPrincipal);
         pnPrincipal.setLayout(pnPrincipalLayout);
@@ -225,9 +226,11 @@ public class LoginCliente extends javax.swing.JFrame {
                     .addComponent(lblSaud))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblOnline)
-                    .addComponent(pnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnPrincipalLayout.createSequentialGroup()
+                        .addComponent(lblOnline)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(scrollClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnPrincipalLayout.setVerticalGroup(
             pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -239,8 +242,8 @@ public class LoginCliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollServicos)
-                    .addComponent(pnClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollClientes))
                 .addContainerGap())
         );
 
@@ -348,6 +351,7 @@ public class LoginCliente extends javax.swing.JFrame {
     private javax.swing.JPanel pnServicos;
     private javax.swing.JPanel pnTela;
     private javax.swing.JScrollPane scrollChat;
+    private javax.swing.JScrollPane scrollClientes;
     private javax.swing.JScrollPane scrollServicos;
     private javax.swing.JTextArea txtChat;
     private javax.swing.JTextField txtIp;

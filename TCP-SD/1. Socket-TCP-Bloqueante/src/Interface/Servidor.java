@@ -22,7 +22,21 @@ public class Servidor extends javax.swing.JFrame {
     public Servidor() {
         initComponents();
     }
+    
+    public void atualizaCliente()
+    {
+        
+    }
+    
+    public void atualizaServico()
+    {
+        
+    }
 
+    public void atualizaMensagem(String msg)
+    {
+        txtChat.setText(txtChat.getText() + msg);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,8 +49,8 @@ public class Servidor extends javax.swing.JFrame {
         pnTela = new javax.swing.JPanel();
         pnConect = new javax.swing.JPanel();
         lblPorta = new javax.swing.JLabel();
-        txtPorta = new javax.swing.JTextField();
         btConectar = new javax.swing.JButton();
+        txtPorta = new javax.swing.JFormattedTextField();
         pnPrincipal = new javax.swing.JPanel();
         pnChat = new javax.swing.JPanel();
         scrollChat = new javax.swing.JScrollPane();
@@ -45,9 +59,10 @@ public class Servidor extends javax.swing.JFrame {
         btEnviar = new javax.swing.JButton();
         scrollServicos = new javax.swing.JScrollPane();
         pnServicos = new javax.swing.JPanel();
-        pnClientes = new javax.swing.JPanel();
         lblOnline = new javax.swing.JLabel();
         lblServico = new javax.swing.JLabel();
+        scrollClientes = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,8 +70,6 @@ public class Servidor extends javax.swing.JFrame {
 
         lblPorta.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lblPorta.setText("Digite a porta do servidor:");
-
-        txtPorta.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         btConectar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btConectar.setText("Conectar");
@@ -66,14 +79,16 @@ public class Servidor extends javax.swing.JFrame {
             }
         });
 
+        txtPorta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#######"))));
+        txtPorta.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout pnConectLayout = new javax.swing.GroupLayout(pnConect);
         pnConect.setLayout(pnConectLayout);
         pnConectLayout.setHorizontalGroup(
             pnConectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnConectLayout.createSequentialGroup()
                 .addGroup(pnConectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPorta, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnConectLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnConectLayout.createSequentialGroup()
                         .addGroup(pnConectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnConectLayout.createSequentialGroup()
                                 .addContainerGap()
@@ -81,7 +96,8 @@ public class Servidor extends javax.swing.JFrame {
                             .addGroup(pnConectLayout.createSequentialGroup()
                                 .addGap(232, 232, 232)
                                 .addComponent(btConectar)))
-                        .addGap(0, 240, Short.MAX_VALUE)))
+                        .addGap(0, 240, Short.MAX_VALUE))
+                    .addComponent(txtPorta))
                 .addContainerGap())
         );
         pnConectLayout.setVerticalGroup(
@@ -89,11 +105,11 @@ public class Servidor extends javax.swing.JFrame {
             .addGroup(pnConectLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblPorta)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtPorta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addComponent(btConectar)
-                .addContainerGap(181, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
 
         pnTela.add(pnConect, "card2");
@@ -127,7 +143,7 @@ public class Servidor extends javax.swing.JFrame {
         pnChatLayout.setVerticalGroup(
             pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnChatLayout.createSequentialGroup()
-                .addComponent(scrollChat, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                .addComponent(scrollChat)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,22 +152,22 @@ public class Servidor extends javax.swing.JFrame {
 
         scrollServicos.setViewportView(pnServicos);
 
-        pnClientes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        javax.swing.GroupLayout pnClientesLayout = new javax.swing.GroupLayout(pnClientes);
-        pnClientes.setLayout(pnClientesLayout);
-        pnClientesLayout.setHorizontalGroup(
-            pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 151, Short.MAX_VALUE)
-        );
-        pnClientesLayout.setVerticalGroup(
-            pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         lblOnline.setText("Clientes Online :");
 
         lblServico.setText("Serviços Disponiveis :");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 144, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 286, Short.MAX_VALUE)
+        );
+
+        scrollClientes.setViewportView(jPanel1);
 
         javax.swing.GroupLayout pnPrincipalLayout = new javax.swing.GroupLayout(pnPrincipal);
         pnPrincipal.setLayout(pnPrincipalLayout);
@@ -167,9 +183,11 @@ public class Servidor extends javax.swing.JFrame {
                     .addComponent(lblServico))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblOnline)
-                    .addComponent(pnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnPrincipalLayout.createSequentialGroup()
+                        .addComponent(lblOnline)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(scrollClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnPrincipalLayout.setVerticalGroup(
             pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,8 +199,8 @@ public class Servidor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollServicos)
-                    .addComponent(pnClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollClientes))
                 .addContainerGap())
         );
 
@@ -262,19 +280,20 @@ public class Servidor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btConectar;
     private javax.swing.JButton btEnviar;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblOnline;
     private javax.swing.JLabel lblPorta;
     private javax.swing.JLabel lblServico;
     private javax.swing.JPanel pnChat;
-    private javax.swing.JPanel pnClientes;
     private javax.swing.JPanel pnConect;
     private javax.swing.JPanel pnPrincipal;
     private javax.swing.JPanel pnServicos;
     private javax.swing.JPanel pnTela;
     private javax.swing.JScrollPane scrollChat;
+    private javax.swing.JScrollPane scrollClientes;
     private javax.swing.JScrollPane scrollServicos;
     private javax.swing.JTextArea txtChat;
     private javax.swing.JTextField txtMensagem;
-    private javax.swing.JTextField txtPorta;
+    private javax.swing.JFormattedTextField txtPorta;
     // End of variables declaration//GEN-END:variables
 }

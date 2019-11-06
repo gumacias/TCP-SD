@@ -72,7 +72,6 @@ public class Cliente {
                             msg = protocolo.getNome();
                             break;
                         case "logout":
-                            System.out.println("2" +receber );
                             return;
                         default:
                             break;

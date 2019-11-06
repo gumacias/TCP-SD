@@ -12,11 +12,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ServidorThread extends Thread {
+public class ServidorThread {
 
     public Socket clientSocket;
-    private ListaClientes lista = ListaClientes.getInstance();
-    private ArrayList<DataOutputStream> broadcast = lista.getSaida();
+    private final ListaClientes lista = ListaClientes.getInstance();
+    private final ArrayList<DataOutputStream> broadcast = lista.getSaida();
+    private final ListaServicos lServico = ListaServicos.getInstance();
     int porta;
     Protocolo protocol;
     Gson gson = new Gson();
@@ -35,7 +36,8 @@ public class ServidorThread extends Thread {
         new Thread(openServer).start();
     }
     
-    private Runnable openServer = new Runnable() {
+    private final Runnable openServer = new Runnable() {
+        @Override
         public void run() {
             try {
                 ServerSocket serverSocket = new ServerSocket(porta);  // *** socket() + bind()  // instancia o socket do servidor na porta 9999. 
@@ -58,9 +60,9 @@ public class ServidorThread extends Thread {
 
     private ServidorThread(Socket clientSoc) {
         clientSocket = clientSoc;
-        start();
+        new Thread(server).start();
     }
-
+private final Runnable server = new Runnable() {
     @Override
     public void run() {
         Usuario user = null;
@@ -83,7 +85,6 @@ public class ServidorThread extends Thread {
             lista.add(os);
             
             do {
-                //writer = new FileWriter("clientes.json");
                 switch (protocol.getAction()) {
                     case "login":
                         protocol = new Protocolo("listarUsuarios", lista.getCliente() );
@@ -95,7 +96,7 @@ public class ServidorThread extends Thread {
                         break;
                     case "logout":
                         protocol.setAction("logout");
-                        os.writeUTF(gson.toJson(protocol));
+                        os.writeUTF(gson.toJson(protocol.getAction()));
                         lista.remove(user);
                         lista.remove(os);
                         //writer.write(gson.toJson(lista));
@@ -107,28 +108,36 @@ public class ServidorThread extends Thread {
                         for(DataOutputStream cliente : broadcast)
                             cliente.writeUTF(gson.toJson(protocol));
                         break;
+                    case "cadastrarServico":
+                        protocol.getServico().setEmpregador(user);
+                        lServico.add(protocol.getServico());
+                        protocol = new Protocolo(lServico.getServicos());
+                        protocol.setAction("listarServicos");
+                        for(DataOutputStream cliente : broadcast)
+                            cliente.writeUTF(gson.toJson(protocol));
+                        break;    
                     default:
-                        System.out.println("Cliente enviou: " + line);
                         break;
                 }
+                System.out.println("Cliente enviou: " + line);
                 line = is.readUTF();
-                if(line == null)
-                    break;
                 protocol = gson.fromJson(line, Protocolo.class);
             }while(line != null);
         } catch (IOException ex) {
             System.out.println("Cliente desconectado");
         } 
     }
+};
     
     public void sendMessage(String msg)
     {
         protocol = new Protocolo("Server: " + msg);
-        for(DataOutputStream cliente : broadcast)
+        broadcast.forEach((cliente) -> {
             try {
                 cliente.writeUTF(gson.toJson(protocol));
             } catch (IOException ex) {
                 System.out.println("Cliente não conectado");
             }
+        });
     }
 } // classe

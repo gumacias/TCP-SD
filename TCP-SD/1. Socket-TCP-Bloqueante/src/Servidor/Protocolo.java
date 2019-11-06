@@ -8,9 +8,9 @@ public class Protocolo {
     private String action;
     private String nome;
     String mensagem;
-    private Usuario empregador;
+    private Servico servico;
     private ArrayList<Usuario> usuarios;
-    private ArrayList<Servico> servico;
+    private ArrayList<Servico> servicos;
 
     public Protocolo(String mensagem)
     {
@@ -28,10 +28,9 @@ public class Protocolo {
         this.usuarios = usuarios;
     }
     
-    public Protocolo(String action, Usuario empregador, Servico servico)
+    public Protocolo(ArrayList<Servico> servicos)
     {
-        this.action = action;
-        
+        this.servicos = servicos;
     }
     
     public String getAction() {
@@ -58,12 +57,12 @@ public class Protocolo {
         this.usuarios = usuarios;
     }
 
-    public ArrayList<Servico> getServico() {
-        return servico;
+    public ArrayList<Servico> getServicos() {
+        return servicos;
     }
 
-    public void setServico(ArrayList<Servico> servico) {
-        this.servico = servico;
+    public void setServicos(ArrayList<Servico> servico) {
+        this.servicos = servicos;
     }
     
     public String getMensagem() {
@@ -74,13 +73,12 @@ public class Protocolo {
         this.mensagem = mensagem;
     }
 
-    public Usuario getEmpregador() {
-        return empregador;
+    public Servico getServico() {
+        return servico;
     }
 
-    public void setEmpregador(Usuario empregador) {
-        this.empregador = empregador;
+    public void setServico(Servico servico) {
+        this.servico = servico;
     }
-    
     
 }
