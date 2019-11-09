@@ -99,6 +99,9 @@ private final Runnable server = new Runnable() {
                         os.writeUTF(gson.toJson(protocol.getAction()));
                         lista.remove(user);
                         lista.remove(os);
+                        protocol = new Protocolo("listarUsuarios", lista.getCliente());
+                        for(DataOutputStream cliente : broadcast)
+                            cliente.writeUTF(gson.toJson(protocol));
                         //writer.write(gson.toJson(lista));
                         //writer.close();
                         clientSocket.close();

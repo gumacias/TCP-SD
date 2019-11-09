@@ -68,7 +68,7 @@ public class Cliente {
                             
                             break;
                         case "broadcast":
-                            flagMsg = true;
+                            
                             msg = protocolo.getNome();
                             break;
                         case "logout":

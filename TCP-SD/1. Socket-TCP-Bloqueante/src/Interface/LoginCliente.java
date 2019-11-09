@@ -90,7 +90,11 @@ public class LoginCliente extends javax.swing.JFrame {
             }
         });
 
-        txtPorta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        try {
+            txtPorta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         txtPorta.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout pnLoginLayout = new javax.swing.GroupLayout(pnLogin);
@@ -184,7 +188,7 @@ public class LoginCliente extends javax.swing.JFrame {
         pnChatLayout.setVerticalGroup(
             pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnChatLayout.createSequentialGroup()
-                .addComponent(scrollChat, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(scrollChat)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnChatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMensagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +233,7 @@ public class LoginCliente extends javax.swing.JFrame {
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
                         .addComponent(lblOnline)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+                    .addComponent(scrollClientes))
                 .addContainerGap())
         );
         pnPrincipalLayout.setVerticalGroup(
