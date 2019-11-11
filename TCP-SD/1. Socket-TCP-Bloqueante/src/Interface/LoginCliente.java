@@ -22,6 +22,7 @@ public class LoginCliente extends javax.swing.JFrame {
     public LoginCliente() {
         //painel.setBorder(BorderFactory.createTitledBorder("Borda"));
         initComponents();
+        this.setTitle("Intermediador de servicos");
     }
     
     /**
@@ -43,7 +44,7 @@ public class LoginCliente extends javax.swing.JFrame {
         btConectar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         txtPorta = new javax.swing.JFormattedTextField();
-        pnPrincipal = new javax.swing.JPanel();
+        pnPrincipalEmp = new javax.swing.JPanel();
         pnChat = new javax.swing.JPanel();
         scrollChat = new javax.swing.JScrollPane();
         txtChat = new javax.swing.JTextArea();
@@ -56,8 +57,26 @@ public class LoginCliente extends javax.swing.JFrame {
         lblOnline = new javax.swing.JLabel();
         scrollClientes = new javax.swing.JScrollPane();
         pnClientes = new javax.swing.JPanel();
+        pnPrincipal = new javax.swing.JPanel();
+        pnChat1 = new javax.swing.JPanel();
+        scrollChat1 = new javax.swing.JScrollPane();
+        txtChat1 = new javax.swing.JTextArea();
+        txtMensagem1 = new javax.swing.JTextField();
+        btEnviar1 = new javax.swing.JButton();
+        btSair1 = new javax.swing.JButton();
+        lblSaud1 = new javax.swing.JLabel();
+        scrollServicos1 = new javax.swing.JScrollPane();
+        pnServicos1 = new javax.swing.JPanel();
+        lblOnline1 = new javax.swing.JLabel();
+        scrollClientes1 = new javax.swing.JScrollPane();
+        pnClientes1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                closeClient(evt);
+            }
+        });
 
         pnTela.setLayout(new java.awt.CardLayout());
 
@@ -203,18 +222,104 @@ public class LoginCliente extends javax.swing.JFrame {
 
         lblOnline.setText("Clientes Online :");
 
-        javax.swing.GroupLayout pnClientesLayout = new javax.swing.GroupLayout(pnClientes);
-        pnClientes.setLayout(pnClientesLayout);
-        pnClientesLayout.setHorizontalGroup(
-            pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 153, Short.MAX_VALUE)
+        pnClientes.setMaximumSize(new java.awt.Dimension(145, 32767));
+        pnClientes.setPreferredSize(new java.awt.Dimension(145, 278));
+        scrollClientes.setViewportView(pnClientes);
+
+        javax.swing.GroupLayout pnPrincipalEmpLayout = new javax.swing.GroupLayout(pnPrincipalEmp);
+        pnPrincipalEmp.setLayout(pnPrincipalEmpLayout);
+        pnPrincipalEmpLayout.setHorizontalGroup(
+            pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnPrincipalEmpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
+                        .addComponent(scrollServicos, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSaud))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
+                        .addComponent(lblOnline)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(scrollClientes))
+                .addContainerGap())
         );
-        pnClientesLayout.setVerticalGroup(
-            pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 278, Short.MAX_VALUE)
+        pnPrincipalEmpLayout.setVerticalGroup(
+            pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSaud)
+                    .addComponent(lblOnline))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollServicos)
+                    .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollClientes))
+                .addContainerGap())
         );
 
-        scrollClientes.setViewportView(pnClientes);
+        pnTela.add(pnPrincipalEmp, "emp");
+
+        txtChat1.setEditable(false);
+        txtChat1.setColumns(20);
+        txtChat1.setRows(5);
+        scrollChat1.setViewportView(txtChat1);
+
+        btEnviar1.setText("Enviar");
+        btEnviar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEnviar1ActionPerformed(evt);
+            }
+        });
+
+        btSair1.setBackground(new java.awt.Color(255, 0, 0));
+        btSair1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btSair1.setText("Logout");
+        btSair1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSair1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnChat1Layout = new javax.swing.GroupLayout(pnChat1);
+        pnChat1.setLayout(pnChat1Layout);
+        pnChat1Layout.setHorizontalGroup(
+            pnChat1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnChat1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnChat1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(pnChat1Layout.createSequentialGroup()
+                        .addComponent(txtMensagem1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btEnviar1))
+                    .addComponent(scrollChat1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(btSair1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
+        );
+        pnChat1Layout.setVerticalGroup(
+            pnChat1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnChat1Layout.createSequentialGroup()
+                .addComponent(scrollChat1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnChat1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMensagem1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btEnviar1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btSair1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        lblSaud1.setText("Bem Vindo!");
+
+        scrollServicos1.setViewportView(pnServicos1);
+
+        lblOnline1.setText("Clientes Online :");
+
+        pnClientes1.setMaximumSize(new java.awt.Dimension(145, 32767));
+        pnClientes1.setPreferredSize(new java.awt.Dimension(145, 278));
+        scrollClientes1.setViewportView(pnClientes1);
 
         javax.swing.GroupLayout pnPrincipalLayout = new javax.swing.GroupLayout(pnPrincipal);
         pnPrincipal.setLayout(pnPrincipalLayout);
@@ -224,16 +329,16 @@ public class LoginCliente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
-                        .addComponent(scrollServicos, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(scrollServicos1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblSaud))
+                        .addComponent(pnChat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSaud1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
-                        .addComponent(lblOnline)
+                        .addComponent(lblOnline1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollClientes))
+                    .addComponent(scrollClientes1))
                 .addContainerGap())
         );
         pnPrincipalLayout.setVerticalGroup(
@@ -241,13 +346,13 @@ public class LoginCliente extends javax.swing.JFrame {
             .addGroup(pnPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSaud)
-                    .addComponent(lblOnline))
+                    .addComponent(lblSaud1)
+                    .addComponent(lblOnline1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollServicos)
-                    .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrollClientes))
+                    .addComponent(scrollServicos1)
+                    .addComponent(pnChat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollClientes1))
                 .addContainerGap())
         );
 
@@ -274,7 +379,8 @@ public class LoginCliente extends javax.swing.JFrame {
             cliente = new Cliente(txtNome.getText(),
                     txtIp.getText(), Integer.parseInt(txtPorta.getText()));
             CardLayout cl = (CardLayout) pnTela.getLayout();
-            cl.show(pnTela, "main");
+            cl.show(pnTela, "emp");
+            
         }
         else
         {
@@ -296,12 +402,26 @@ public class LoginCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btEnviarActionPerformed
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
+        System.out.println("Foi");
         CardLayout cl = (CardLayout) pnTela.getLayout();
         cl.show(pnTela, "login");
         cliente.logout();
         cliente = null;
         txtChat.setText("");
+        
     }//GEN-LAST:event_btSairActionPerformed
+
+    private void closeClient(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeClient
+        cliente.logout();
+    }//GEN-LAST:event_closeClient
+
+    private void btEnviar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btEnviar1ActionPerformed
+
+    private void btSair1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSair1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btSair1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -342,24 +462,37 @@ public class LoginCliente extends javax.swing.JFrame {
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btConectar;
     private javax.swing.JButton btEnviar;
+    private javax.swing.JButton btEnviar1;
     private javax.swing.JButton btSair;
+    private javax.swing.JButton btSair1;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblIP;
     private javax.swing.JLabel lblIP1;
     private javax.swing.JLabel lblOnline;
+    private javax.swing.JLabel lblOnline1;
     private javax.swing.JLabel lblSaud;
+    private javax.swing.JLabel lblSaud1;
     private javax.swing.JPanel pnChat;
+    private javax.swing.JPanel pnChat1;
     private javax.swing.JPanel pnClientes;
+    private javax.swing.JPanel pnClientes1;
     private javax.swing.JPanel pnLogin;
     private javax.swing.JPanel pnPrincipal;
+    private javax.swing.JPanel pnPrincipalEmp;
     private javax.swing.JPanel pnServicos;
+    private javax.swing.JPanel pnServicos1;
     private javax.swing.JPanel pnTela;
     private javax.swing.JScrollPane scrollChat;
+    private javax.swing.JScrollPane scrollChat1;
     private javax.swing.JScrollPane scrollClientes;
+    private javax.swing.JScrollPane scrollClientes1;
     private javax.swing.JScrollPane scrollServicos;
+    private javax.swing.JScrollPane scrollServicos1;
     private javax.swing.JTextArea txtChat;
+    private javax.swing.JTextArea txtChat1;
     private javax.swing.JTextField txtIp;
     private javax.swing.JTextField txtMensagem;
+    private javax.swing.JTextField txtMensagem1;
     private javax.swing.JTextField txtNome;
     private javax.swing.JFormattedTextField txtPorta;
     // End of variables declaration//GEN-END:variables

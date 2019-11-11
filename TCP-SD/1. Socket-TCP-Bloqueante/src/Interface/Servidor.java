@@ -5,14 +5,22 @@
  */
 package Interface;
 
+import Cliente.ListaClientes;
+import Cliente.Usuario;
 import Servidor.ServidorThread;
 import java.awt.CardLayout;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
 
 /**
  *
  * @author Gustavo
  */
-public class Servidor extends javax.swing.JFrame {
+public class Servidor extends javax.swing.JFrame implements Observer {
+    
+    private ArrayList<Usuario> lista = ListaClientes.getInstance().getCliente();
 
     ServidorThread servidor = null;
     
@@ -21,11 +29,18 @@ public class Servidor extends javax.swing.JFrame {
      */
     public Servidor() {
         initComponents();
+        this.setTitle("Servidor");
     }
     
     public void atualizaCliente()
     {
-        
+        pnClientes.removeAll();
+        for(Usuario user : lista)
+        {
+            pnClientes.add(new NCliente(user));
+        }
+        pnClientes.revalidate();
+        pnClientes.repaint();
     }
     
     public void atualizaServico()
@@ -62,7 +77,7 @@ public class Servidor extends javax.swing.JFrame {
         lblOnline = new javax.swing.JLabel();
         lblServico = new javax.swing.JLabel();
         scrollClientes = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        pnClientes = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -160,18 +175,9 @@ public class Servidor extends javax.swing.JFrame {
 
         lblServico.setText("Serviços Disponiveis :");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 144, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
-        );
-
-        scrollClientes.setViewportView(jPanel1);
+        pnClientes.setMaximumSize(new java.awt.Dimension(145, 32767));
+        pnClientes.setPreferredSize(new java.awt.Dimension(145, 286));
+        scrollClientes.setViewportView(pnClientes);
 
         javax.swing.GroupLayout pnPrincipalLayout = new javax.swing.GroupLayout(pnPrincipal);
         pnPrincipal.setLayout(pnPrincipalLayout);
@@ -202,9 +208,11 @@ public class Servidor extends javax.swing.JFrame {
                     .addComponent(lblServico))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollServicos)
                     .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrollClientes))
+                    .addGroup(pnPrincipalLayout.createSequentialGroup()
+                        .addComponent(scrollClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(scrollServicos))
                 .addContainerGap())
         );
 
@@ -238,6 +246,7 @@ public class Servidor extends javax.swing.JFrame {
     }//GEN-LAST:event_btConectarActionPerformed
 
     private void btEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviarActionPerformed
+        atualizaCliente();
         if(!txtMensagem.getText().equals(""))
         {
             servidor.sendMessage(txtMensagem.getText());
@@ -285,11 +294,11 @@ public class Servidor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btConectar;
     private javax.swing.JButton btEnviar;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblOnline;
     private javax.swing.JLabel lblPorta;
     private javax.swing.JLabel lblServico;
     private javax.swing.JPanel pnChat;
+    private javax.swing.JPanel pnClientes;
     private javax.swing.JPanel pnConect;
     private javax.swing.JPanel pnPrincipal;
     private javax.swing.JPanel pnServicos;
@@ -301,4 +310,9 @@ public class Servidor extends javax.swing.JFrame {
     private javax.swing.JTextField txtMensagem;
     private javax.swing.JFormattedTextField txtPorta;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
