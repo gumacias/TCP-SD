@@ -1,7 +1,7 @@
 # TCP-SD
 
-Mensagem Direta
-Diferenciar empregador e empregado
-Insercao de mensagem na interface
-Cadastro Servico
-Mostrar servico
+Mensagem Direta  <br/>
+Diferenciar empregador e empregado  <br/>
+Insercao de mensagem na interface  <br/>
+Cadastro Servico  <br/>
+Mostrar servico  <br/>
