@@ -28,8 +28,9 @@ public class Protocolo {
         this.usuarios = usuarios;
     }
     
-    public Protocolo(ArrayList<Servico> servicos)
+    public Protocolo(ArrayList<Servico> servicos, String action)
     {
+        this.action = action;
         this.servicos = servicos;
     }
     

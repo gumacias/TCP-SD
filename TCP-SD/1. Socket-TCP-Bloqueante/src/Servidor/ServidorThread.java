@@ -92,12 +92,15 @@ private final Runnable server = new Runnable() {
                         //os.writeUTF("Conectado");
                         for(DataOutputStream cliente : broadcast)
                             cliente.writeUTF(gson.toJson(protocol));
+                        protocol = new Protocolo(lServico.getServicos(),"listarServicos");
+                        os.writeUTF(gson.toJson(protocol));
                         //writer.write(gson.toJson(lista));
                         //writer.close();
                         break;
                     case "logout":
                         protocol.setAction("logout");
-                        os.writeUTF(gson.toJson(protocol.getAction()));
+                        os.writeUTF(gson.toJson(protocol));
+                        System.out.println(gson.toJson(protocol));
                         lista.remove(user);
                         lista.remove(os);
                         protocol = new Protocolo("listarUsuarios", lista.getCliente());
@@ -115,8 +118,7 @@ private final Runnable server = new Runnable() {
                     case "cadastrarServico":
                         protocol.getServico().setEmpregador(user);
                         lServico.add(protocol.getServico());
-                        protocol = new Protocolo(lServico.getServicos());
-                        protocol.setAction("listarServicos");
+                        protocol = new Protocolo(lServico.getServicos(), "listarServicos");
                         for(DataOutputStream cliente : broadcast)
                             cliente.writeUTF(gson.toJson(protocol));
                         break;    

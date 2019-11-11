@@ -416,11 +416,21 @@ public class LoginCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_closeClient
 
     private void btEnviar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviar1ActionPerformed
-        // TODO add your handling code here:
+        if(!txtMensagem.getText().equals(""))
+        {
+            cliente.sendMessage(txtMensagem.getText());
+            txtMensagem.setText("");
+        }
+        btEnviar.transferFocusBackward();
     }//GEN-LAST:event_btEnviar1ActionPerformed
 
     private void btSair1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSair1ActionPerformed
-        // TODO add your handling code here:
+        System.out.println("Foi");
+        CardLayout cl = (CardLayout) pnTela.getLayout();
+        cl.show(pnTela, "login");
+        cliente.logout();
+        cliente = null;
+        txtChat.setText("");
     }//GEN-LAST:event_btSair1ActionPerformed
 
     /**
