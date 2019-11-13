@@ -21,7 +21,7 @@ public class ServidorThread {
     int porta;
     Protocolo protocol;
     Gson gson = new Gson();
-
+    
     public ServidorThread(int porta) {
         this.porta = porta;
         new Thread(openServer).start();
@@ -71,7 +71,7 @@ public class ServidorThread {
                 protocol = gson.fromJson(line, Protocolo.class);
                 user = new Usuario(protocol.getNome(),
                         clientSocket.getInetAddress().toString().replace("/", ""),
-                        clientSocket.getPort());
+                        clientSocket.getPort(), protocol.getTipo());
                 lista.add(user);
                 lista.add(os);
 
@@ -116,6 +116,14 @@ public class ServidorThread {
                                 cliente.writeUTF(gson.toJson(protocol));
                             }
                             break;
+                        case "mensagemDireta":
+                            protocol.setRemetente(user);
+                            DataOutputStream destino = broadcast.get(
+                                    lista.getCliente().indexOf(protocol.getDestinatario())
+                            );
+                            protocol.setDestinatario(null);
+                            destino.writeUTF(gson.toJson(protocol));
+                            break;
                         default:
                             break;
                     }
@@ -128,6 +136,19 @@ public class ServidorThread {
             }
         }
     };
+
+    public void sendMessage(Usuario user, String msg) {
+        protocol = new Protocolo(msg, user);
+        protocol.setRemetente(user);
+        protocol.setDestinatario(null);
+        DataOutputStream os = broadcast.get(
+                                    lista.getCliente().indexOf(user));
+        try {
+            os.writeUTF(gson.toJson(protocol));
+        } catch (IOException ex) {
+            System.out.println("Não foi possivel enviar a mensagem ao servidor");
+        }
+    }
 
     public void sendBroadcast(String msg) {
         protocol = new Protocolo("Server: " + msg);

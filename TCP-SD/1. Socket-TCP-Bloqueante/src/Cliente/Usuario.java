@@ -12,21 +12,15 @@ package Cliente;
  */
 public class Usuario {
     private String nome;
+    private String tipo;
     private String ip;
     private int porta;
 
-    public Usuario(String nome, String ip, int porta) {
+    public Usuario(String nome, String ip, int porta, String tipo) {
         this.ip = ip;
+        this.tipo = tipo;
         this.nome = nome;
         this.porta = porta;
-    }
-
-    public String getIP() {
-        return ip;
-    }
-
-    public void setIP(String ip) {
-        this.ip = ip;
     }
 
     public String getNome() {
@@ -44,5 +38,23 @@ public class Usuario {
     public void setPorta(int porta) {
         this.porta = porta;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+    
+    
 
 }

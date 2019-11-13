@@ -7,8 +7,11 @@ import java.util.ArrayList;
 public class Protocolo {
     private String action;
     private String nome;
-    String mensagem;
+    private String tipo;
+    private String mensagem;
     private Servico servico;
+    private Usuario destinatario;
+    private Usuario remetente;
     private ArrayList<Usuario> usuarios;
     private ArrayList<Servico> servicos;
 
@@ -17,9 +20,16 @@ public class Protocolo {
         this.action = "broadcast";
         this.mensagem = mensagem;
     }
-    public Protocolo(String action, String nome) {
+    public Protocolo(String mensagem, Usuario destinatario)
+    {
+        this.action = "mensagemDireta";
+        this.mensagem = mensagem;
+        this.destinatario = destinatario;
+    }
+    public Protocolo(String action, String nome, String tipo) {
         this.action = action;
         this.nome = nome;
+        this.tipo = tipo;
     }
     
     public Protocolo(String action, ArrayList<Usuario> usuarios)
@@ -63,7 +73,7 @@ public class Protocolo {
     }
 
     public void setServicos(ArrayList<Servico> servico) {
-        this.servicos = servicos;
+        this.servicos = servico;
     }
     
     public String getMensagem() {
@@ -81,5 +91,31 @@ public class Protocolo {
     public void setServico(Servico servico) {
         this.servico = servico;
     }
+
+    public Usuario getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(Usuario user) {
+        this.destinatario = user;
+    }
+
+    public Usuario getRemetente() {
+        return remetente;
+    }
+
+    public void setRemetente(Usuario remetente) {
+        this.remetente = remetente;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
+    
     
 }

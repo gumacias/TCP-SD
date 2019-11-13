@@ -5,6 +5,8 @@
  */
 package Interface;
 
+import Cliente.Cliente;
+import Cliente.Usuario;
 import Servidor.ServidorThread;
 
 /**
@@ -13,15 +15,26 @@ import Servidor.ServidorThread;
  */
 public class MsgDireta extends javax.swing.JFrame {
     
-    //ServidorThread servidor;
+    Cliente cliente;
+    Usuario user = null;
+    ServidorThread servidor = null;
     
     /**
      * Creates new form MsgDireta
      */
-    public MsgDireta(/*ServidorThread servidor*/) {
-        //this.servidor = servidor;
+    public MsgDireta(Usuario user, ServidorThread servidor)
+    {
+        this.user = user;
+        this.servidor = servidor;
         initComponents();
-        this.setTitle("Chat com[nome]");
+        this.setTitle("Chat com " + user.getNome());
+    }
+    
+    public MsgDireta(Usuario user, Cliente cliente) {
+        this.cliente = cliente;
+        this.user = user;
+        initComponents();
+        this.setTitle("Chat com" + user.getNome() );
     }
 
     /**
@@ -104,13 +117,19 @@ public class MsgDireta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviarActionPerformed
-        /*if(!txtMensagem.getText().equals(""))
+        if(!txtMensagem.getText().equals("")&& cliente != null)
         {
-            servidor.sendMessage(txtMensagem.getText());
-            txtChat.setText(txtChat.getText()+"Server: " + txtMensagem.getText()+"\n");
+            cliente.sendMessage(user, txtMensagem.getText());
+            txtChat.setText(txtChat.getText() + "You: " + txtMensagem.getText()+"\n");
             txtMensagem.setText("");
         }
-        btEnviar.transferFocusBackward();*/
+        else if(!txtMensagem.getText().equals(""))
+        {
+            servidor.sendMessage(user, "Server: " + txtMensagem.getText());
+            txtChat.setText(txtChat.getText() + txtMensagem.getText()+"\n");
+            txtMensagem.setText("");
+        }
+        btEnviar.transferFocusBackward();
     }//GEN-LAST:event_btEnviarActionPerformed
 
 
