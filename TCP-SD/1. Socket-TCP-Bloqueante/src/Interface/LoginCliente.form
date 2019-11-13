@@ -82,7 +82,7 @@
                                           <Component id="txtIp" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Component id="lblIP1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lbPorta" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Component id="txtPorta" max="32767" attributes="0"/>
                                       </Group>
@@ -109,7 +109,7 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblIP1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbPorta" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtPorta" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -144,7 +144,7 @@
                 <Property name="text" type="java.lang.String" value="Ip do Servidor :"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblIP1">
+            <Component class="javax.swing.JLabel" name="lbPorta">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="18" style="1"/>
@@ -231,7 +231,26 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="160" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="scrollServicos" pref="154" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblCargo" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtCargo" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="txtDescricao" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="btCadastra" alignment="1" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="lblDescricao" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblSalario" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtSalario" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="pnChat" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="lblSaud" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -242,7 +261,7 @@
                               <Component id="lblOnline" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="scrollClientes" pref="155" max="32767" attributes="0"/>
+                          <Component id="scrollClientes" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -260,6 +279,25 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pnChat" alignment="0" max="32767" attributes="0"/>
                           <Component id="scrollClientes" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblCargo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtCargo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblSalario" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtSalario" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblDescricao" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtDescricao" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btCadastra" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="scrollServicos" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -347,6 +385,16 @@
                 <Property name="text" type="java.lang.String" value="Bem Vindo!"/>
               </Properties>
             </Component>
+            <Container class="javax.swing.JScrollPane" name="scrollServicos">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="pnServicos">
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+                </Container>
+              </SubComponents>
+            </Container>
             <Component class="javax.swing.JLabel" name="lblOnline">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clientes Online :"/>
@@ -370,6 +418,40 @@
                 </Container>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JLabel" name="lblCargo">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cargo:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtCargo">
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblSalario">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Salario:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblDescricao">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Descricao:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtDescricao">
+            </Component>
+            <Component class="javax.swing.JButton" name="btCadastra">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cadastrar Servico"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btCadastraActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JFormattedTextField" name="txtSalario">
+              <Properties>
+                <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+                  <Format format="#0.##" subtype="-1" type="0"/>
+                </Property>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnPrincipal">

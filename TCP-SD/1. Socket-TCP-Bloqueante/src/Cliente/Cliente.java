@@ -1,6 +1,7 @@
 package Cliente;
 
 import Servidor.Protocolo;
+import Servidor.Servico;
 import com.google.gson.Gson;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -59,6 +60,17 @@ public class Cliente {
 
     public void sendBroadcast(String msg) {
         protocolo = new Protocolo(msg);
+        try {
+            out.writeUTF(gson.toJson(protocolo));
+        } catch (IOException ex) {
+            System.out.println("Desconectado do servidor");
+            //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void cadastrarServico(String cargo, float salario, String descricao)
+    {
+        protocolo = new Protocolo(gson.toJson(new Servico(cargo, descricao, salario)));
         try {
             out.writeUTF(gson.toJson(protocolo));
         } catch (IOException ex) {

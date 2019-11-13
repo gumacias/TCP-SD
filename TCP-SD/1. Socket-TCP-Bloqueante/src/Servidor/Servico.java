@@ -24,6 +24,12 @@ public class Servico {
         this.salario = salario;
         this.empregador = empregador;
     }
+    public Servico(String cargo, String descricao, float salario)
+    {
+        this.cargo = cargo;
+        this.descricao = descricao;
+        this.salario = salario;
+    }
 
     public String getCargo() {
         return cargo;

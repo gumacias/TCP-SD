@@ -40,7 +40,7 @@ public class LoginCliente extends javax.swing.JFrame {
         pnLogin = new javax.swing.JPanel();
         lblCliente = new javax.swing.JLabel();
         lblIP = new javax.swing.JLabel();
-        lblIP1 = new javax.swing.JLabel();
+        lbPorta = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         txtIp = new javax.swing.JTextField();
         btConectar = new javax.swing.JButton();
@@ -56,9 +56,18 @@ public class LoginCliente extends javax.swing.JFrame {
         btEnviar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
         lblSaud = new javax.swing.JLabel();
+        scrollServicos = new javax.swing.JScrollPane();
+        pnServicos = new javax.swing.JPanel();
         lblOnline = new javax.swing.JLabel();
         scrollClientes = new javax.swing.JScrollPane();
         pnClientes = new javax.swing.JPanel();
+        lblCargo = new javax.swing.JLabel();
+        txtCargo = new javax.swing.JTextField();
+        lblSalario = new javax.swing.JLabel();
+        lblDescricao = new javax.swing.JLabel();
+        txtDescricao = new javax.swing.JTextField();
+        btCadastra = new javax.swing.JButton();
+        txtSalario = new javax.swing.JFormattedTextField();
         pnPrincipal = new javax.swing.JPanel();
         pnChat1 = new javax.swing.JPanel();
         scrollChat1 = new javax.swing.JScrollPane();
@@ -88,8 +97,8 @@ public class LoginCliente extends javax.swing.JFrame {
         lblIP.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblIP.setText("Ip do Servidor :");
 
-        lblIP1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblIP1.setText("Porta do Servidor :");
+        lbPorta.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lbPorta.setText("Porta do Servidor :");
 
         txtNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -153,7 +162,7 @@ public class LoginCliente extends javax.swing.JFrame {
                                     .addGap(18, 18, 18)
                                     .addComponent(txtIp))
                                 .addGroup(pnLoginLayout.createSequentialGroup()
-                                    .addComponent(lblIP1)
+                                    .addComponent(lbPorta)
                                     .addGap(18, 18, 18)
                                     .addComponent(txtPorta))))))
                 .addContainerGap(86, Short.MAX_VALUE))
@@ -171,7 +180,7 @@ public class LoginCliente extends javax.swing.JFrame {
                     .addComponent(txtIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblIP1)
+                    .addComponent(lbPorta)
                     .addComponent(txtPorta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -236,11 +245,28 @@ public class LoginCliente extends javax.swing.JFrame {
 
         lblSaud.setText("Bem Vindo!");
 
+        scrollServicos.setViewportView(pnServicos);
+
         lblOnline.setText("Clientes Online :");
 
         pnClientes.setMaximumSize(new java.awt.Dimension(145, 32767));
         pnClientes.setPreferredSize(new java.awt.Dimension(145, 278));
         scrollClientes.setViewportView(pnClientes);
+
+        lblCargo.setText("Cargo:");
+
+        lblSalario.setText("Salario:");
+
+        lblDescricao.setText("Descricao:");
+
+        btCadastra.setText("Cadastrar Servico");
+        btCadastra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCadastraActionPerformed(evt);
+            }
+        });
+
+        txtSalario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.##"))));
 
         javax.swing.GroupLayout pnPrincipalEmpLayout = new javax.swing.GroupLayout(pnPrincipalEmp);
         pnPrincipalEmp.setLayout(pnPrincipalEmpLayout);
@@ -250,7 +276,22 @@ public class LoginCliente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
-                        .addGap(160, 160, 160)
+                        .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrollServicos, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                            .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
+                                .addComponent(lblCargo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCargo))
+                            .addComponent(txtDescricao)
+                            .addComponent(btCadastra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
+                                .addComponent(lblDescricao)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
+                                .addComponent(lblSalario)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSalario)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblSaud))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -258,7 +299,7 @@ public class LoginCliente extends javax.swing.JFrame {
                     .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
                         .addComponent(lblOnline)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+                    .addComponent(scrollClientes))
                 .addContainerGap())
         );
         pnPrincipalEmpLayout.setVerticalGroup(
@@ -271,7 +312,23 @@ public class LoginCliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrollClientes))
+                    .addComponent(scrollClientes)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnPrincipalEmpLayout.createSequentialGroup()
+                        .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblCargo)
+                            .addComponent(txtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblSalario)
+                            .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDescricao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btCadastra)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scrollServicos)))
                 .addContainerGap())
         );
 
@@ -450,6 +507,11 @@ public class LoginCliente extends javax.swing.JFrame {
         txtChat.setText("");
     }//GEN-LAST:event_btSair1ActionPerformed
 
+    private void btCadastraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastraActionPerformed
+        cliente.cadastrarServico(txtCargo.getText(), Float.parseFloat(txtSalario.getText()),
+                txtDescricao.getText());
+    }//GEN-LAST:event_btCadastraActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -486,6 +548,7 @@ public class LoginCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btCadastra;
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btConectar;
     private javax.swing.JButton btEnviar;
@@ -493,11 +556,14 @@ public class LoginCliente extends javax.swing.JFrame {
     private javax.swing.JButton btSair;
     private javax.swing.JButton btSair1;
     private javax.swing.ButtonGroup gpTipo;
+    private javax.swing.JLabel lbPorta;
+    private javax.swing.JLabel lblCargo;
     private javax.swing.JLabel lblCliente;
+    private javax.swing.JLabel lblDescricao;
     private javax.swing.JLabel lblIP;
-    private javax.swing.JLabel lblIP1;
     private javax.swing.JLabel lblOnline;
     private javax.swing.JLabel lblOnline1;
+    private javax.swing.JLabel lblSalario;
     private javax.swing.JLabel lblSaud;
     private javax.swing.JLabel lblSaud1;
     private javax.swing.JPanel pnChat;
@@ -507,6 +573,7 @@ public class LoginCliente extends javax.swing.JFrame {
     private javax.swing.JPanel pnLogin;
     private javax.swing.JPanel pnPrincipal;
     private javax.swing.JPanel pnPrincipalEmp;
+    private javax.swing.JPanel pnServicos;
     private javax.swing.JPanel pnServicos1;
     private javax.swing.JPanel pnTela;
     private javax.swing.JRadioButton rbEmpregado;
@@ -515,13 +582,17 @@ public class LoginCliente extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollChat1;
     private javax.swing.JScrollPane scrollClientes;
     private javax.swing.JScrollPane scrollClientes1;
+    private javax.swing.JScrollPane scrollServicos;
     private javax.swing.JScrollPane scrollServicos1;
+    private javax.swing.JTextField txtCargo;
     private javax.swing.JTextArea txtChat;
     private javax.swing.JTextArea txtChat1;
+    private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtIp;
     private javax.swing.JTextField txtMensagem;
     private javax.swing.JTextField txtMensagem1;
     private javax.swing.JTextField txtNome;
     private javax.swing.JFormattedTextField txtPorta;
+    private javax.swing.JFormattedTextField txtSalario;
     // End of variables declaration//GEN-END:variables
 }
