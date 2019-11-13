@@ -231,8 +231,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="scrollServicos" min="-2" pref="154" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="160" max="-2" attributes="0"/>
                               <Component id="pnChat" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="lblSaud" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -243,7 +242,7 @@
                               <Component id="lblOnline" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="scrollClientes" max="32767" attributes="0"/>
+                          <Component id="scrollClientes" pref="155" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -259,7 +258,6 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="scrollServicos" max="32767" attributes="0"/>
                           <Component id="pnChat" alignment="0" max="32767" attributes="0"/>
                           <Component id="scrollClientes" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -349,16 +347,6 @@
                 <Property name="text" type="java.lang.String" value="Bem Vindo!"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JScrollPane" name="scrollServicos">
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="pnServicos">
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
-                </Container>
-              </SubComponents>
-            </Container>
             <Component class="javax.swing.JLabel" name="lblOnline">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clientes Online :"/>

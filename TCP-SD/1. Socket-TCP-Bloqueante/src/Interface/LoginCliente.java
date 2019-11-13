@@ -56,8 +56,6 @@ public class LoginCliente extends javax.swing.JFrame {
         btEnviar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
         lblSaud = new javax.swing.JLabel();
-        scrollServicos = new javax.swing.JScrollPane();
-        pnServicos = new javax.swing.JPanel();
         lblOnline = new javax.swing.JLabel();
         scrollClientes = new javax.swing.JScrollPane();
         pnClientes = new javax.swing.JPanel();
@@ -238,8 +236,6 @@ public class LoginCliente extends javax.swing.JFrame {
 
         lblSaud.setText("Bem Vindo!");
 
-        scrollServicos.setViewportView(pnServicos);
-
         lblOnline.setText("Clientes Online :");
 
         pnClientes.setMaximumSize(new java.awt.Dimension(145, 32767));
@@ -254,8 +250,7 @@ public class LoginCliente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
-                        .addComponent(scrollServicos, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(160, 160, 160)
                         .addComponent(pnChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblSaud))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -263,7 +258,7 @@ public class LoginCliente extends javax.swing.JFrame {
                     .addGroup(pnPrincipalEmpLayout.createSequentialGroup()
                         .addComponent(lblOnline)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollClientes))
+                    .addComponent(scrollClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnPrincipalEmpLayout.setVerticalGroup(
@@ -275,7 +270,6 @@ public class LoginCliente extends javax.swing.JFrame {
                     .addComponent(lblOnline))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalEmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollServicos)
                     .addComponent(pnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(scrollClientes))
                 .addContainerGap())
@@ -395,11 +389,19 @@ public class LoginCliente extends javax.swing.JFrame {
     private void btConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConectarActionPerformed
         if (!txtPorta.getText().equals("") && !txtIp.getText().equals("")
                 && !txtNome.getText().equals("")) {
-            if(rbEmpregador.isSelected())
-            cliente = new Cliente(txtNome.getText(),
-                    txtIp.getText(), Integer.parseInt(txtPorta.getText()), "empregador");
             CardLayout cl = (CardLayout) pnTela.getLayout();
-            cl.show(pnTela, "emp");
+            if(rbEmpregador.isSelected())
+            {
+                cliente = new Cliente(txtNome.getText(),
+                        txtIp.getText(), Integer.parseInt(txtPorta.getText()), "empregador");
+                cl.show(pnTela, "emp");
+            }
+            else
+            {
+                    cliente = new Cliente(txtNome.getText(),
+                        txtIp.getText(), Integer.parseInt(txtPorta.getText()), "empregado");
+                cl.show(pnTela, "main");
+            }
 
         } else {
             System.out.println("Todos campos devem ser preenchidos");
@@ -505,7 +507,6 @@ public class LoginCliente extends javax.swing.JFrame {
     private javax.swing.JPanel pnLogin;
     private javax.swing.JPanel pnPrincipal;
     private javax.swing.JPanel pnPrincipalEmp;
-    private javax.swing.JPanel pnServicos;
     private javax.swing.JPanel pnServicos1;
     private javax.swing.JPanel pnTela;
     private javax.swing.JRadioButton rbEmpregado;
@@ -514,7 +515,6 @@ public class LoginCliente extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollChat1;
     private javax.swing.JScrollPane scrollClientes;
     private javax.swing.JScrollPane scrollClientes1;
-    private javax.swing.JScrollPane scrollServicos;
     private javax.swing.JScrollPane scrollServicos1;
     private javax.swing.JTextArea txtChat;
     private javax.swing.JTextArea txtChat1;
