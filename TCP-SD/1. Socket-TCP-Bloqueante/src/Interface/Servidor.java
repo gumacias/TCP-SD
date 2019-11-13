@@ -12,13 +12,15 @@ import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 
 /**
  *
  * @author Gustavo
  */
-public class Servidor extends javax.swing.JFrame implements Observer {
+public class Servidor extends javax.swing.JFrame {
     
     private ArrayList<Usuario> lista = ListaClientes.getInstance().getCliente();
 
@@ -37,7 +39,7 @@ public class Servidor extends javax.swing.JFrame implements Observer {
         pnClientes.removeAll();
         for(Usuario user : lista)
         {
-            pnClientes.add(new NCliente(user));
+            pnClientes.add(addCliente(user));
         }
         pnClientes.revalidate();
         pnClientes.repaint();
@@ -249,7 +251,7 @@ public class Servidor extends javax.swing.JFrame implements Observer {
         atualizaCliente();
         if(!txtMensagem.getText().equals(""))
         {
-            servidor.sendMessage(txtMensagem.getText());
+            servidor.sendBroadcast(txtMensagem.getText());
             txtChat.setText(txtChat.getText()+"Server: " + txtMensagem.getText()+"\n");
             txtMensagem.setText("");
         }
@@ -291,6 +293,48 @@ public class Servidor extends javax.swing.JFrame implements Observer {
         });
     }
 
+    private JPanel addCliente(Usuario user)
+    {
+        JLabel lblNome = new javax.swing.JLabel();
+        JLabel usrNome = new javax.swing.JLabel();
+        JPanel nCliente = new JPanel();
+        nCliente.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        nCliente.setSize(145, 25);
+        nCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                mouseClick(evt);
+            }
+        });
+        lblNome.setText("Nome: ");
+
+        usrNome.setText(user.getNome());
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(nCliente);
+        nCliente.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(lblNome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usrNome)
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(lblNome)
+                .addComponent(usrNome))
+        );
+        
+        return nCliente;
+    }
+    
+    private void mouseClick(java.awt.event.MouseEvent evt) {                            
+        new MsgDireta().setVisible(true);
+    }   
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btConectar;
     private javax.swing.JButton btEnviar;
@@ -311,8 +355,4 @@ public class Servidor extends javax.swing.JFrame implements Observer {
     private javax.swing.JFormattedTextField txtPorta;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
