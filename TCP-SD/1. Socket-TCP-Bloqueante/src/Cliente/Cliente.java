@@ -1,5 +1,7 @@
 package Cliente;
 
+import Interface.LoginCliente;
+import Servidor.ListaServicos;
 import Servidor.Protocolo;
 import Servidor.Servico;
 import com.google.gson.Gson;
@@ -8,11 +10,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 
 public class Cliente {
-
+    
     DataInputStream in = null;                  // cria um duto de entrada
     DataOutputStream out = null;
     String receber;
@@ -20,24 +21,26 @@ public class Cliente {
     boolean flagSair = false;
     public boolean flagMsg = false;
     private String msg = null;
-
+    LoginCliente pai;
     Gson gson = new Gson();
     Protocolo protocolo;
     String enviar;
-
+    private final ListaClientes lista = ListaClientes.getInstance();
+    private final ListaServicos lServico = ListaServicos.getInstance();
+    
     public Cliente(String nome, String serverHostname, int port, String tipo) {
         protocolo = new Protocolo("login", nome, tipo);
         enviar = gson.toJson(protocolo);
         System.out.println("Attemping to connect to host "
                 + serverHostname + " on port " + port);
-
+        
         try {
             clientSocket = new Socket(serverHostname, port);
             in = new DataInputStream(clientSocket.getInputStream());    // aponta o duto de entrada para o socket do cliente
             out = new DataOutputStream(clientSocket.getOutputStream());       // aponta o duto de saída para o socket do cliente
 
             out.writeUTF(enviar);
-
+            
         } catch (UnknownHostException e) {
             System.err.println("Host desconhecido: " + serverHostname);
             System.exit(0);
@@ -48,7 +51,7 @@ public class Cliente {
         }
         new Thread(getMessage).start();
     }
-
+    
     public void sendMessage(Usuario user, String msg) {
         protocolo = new Protocolo(msg, user);
         try {
@@ -57,7 +60,7 @@ public class Cliente {
             System.out.println("Não foi possivel enviar a mensagem ao servidor");
         }
     }
-
+    
     public void sendBroadcast(String msg) {
         protocolo = new Protocolo(msg);
         try {
@@ -68,9 +71,8 @@ public class Cliente {
         }
     }
     
-    public void cadastrarServico(String cargo, float salario, String descricao)
-    {
-        protocolo = new Protocolo(gson.toJson(new Servico(cargo, descricao, salario)));
+    public void cadastrarServico(String cargo, float salario, String descricao) {
+        protocolo = new Protocolo(new Servico(cargo, descricao, salario));
         try {
             out.writeUTF(gson.toJson(protocolo));
         } catch (IOException ex) {
@@ -78,7 +80,7 @@ public class Cliente {
             //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private Runnable getMessage = new Runnable() {
         public void run() {
             try {
@@ -87,14 +89,16 @@ public class Cliente {
                     protocolo = gson.fromJson(receber, Protocolo.class);
                     switch (protocolo.getAction()) {
                         case "listarUsuarios":
-
+                            lista.setListaCliente(protocolo.getUsuarios());
                             break;
                         case "broadcast":
-
                             msg = protocolo.getNome();
                             break;
                         case "logout":
                             return;
+                        case "listarServicos":
+                            lServico.setListaServico(protocolo.getServicos());
+                            break;
                         default:
                             break;
                     }
@@ -104,10 +108,10 @@ public class Cliente {
                 //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
                 System.exit(0);
             }
-
+            
         }
     };
-
+    
     public void logout() {
         protocolo.setAction("logout");
         enviar = gson.toJson(protocolo);
@@ -119,7 +123,7 @@ public class Cliente {
         } catch (IOException ex) {
             System.out.println("Desconectado do servidor");
         }
-
+        
     }
 
     /*public static void main(String[] args) throws IOException {

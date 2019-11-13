@@ -39,5 +39,9 @@ public class ListaServicos {
     {
         return listaServico;
     }
+
+    public void setListaServico(ArrayList<Servico> listaServico) {
+        this.listaServico = listaServico;
+    }
     
 }

@@ -7,7 +7,6 @@ package Interface;
 
 import Cliente.Cliente;
 import Cliente.Usuario;
-import Servidor.ServidorThread;
 
 /**
  *
@@ -17,19 +16,12 @@ public class MsgDireta extends javax.swing.JFrame {
     
     Cliente cliente;
     Usuario user = null;
-    ServidorThread servidor = null;
-    
+        
     /**
      * Creates new form MsgDireta
+     * @param user
+     * @param cliente
      */
-    public MsgDireta(Usuario user, ServidorThread servidor)
-    {
-        this.user = user;
-        this.servidor = servidor;
-        initComponents();
-        this.setTitle("Chat com " + user.getNome());
-    }
-    
     public MsgDireta(Usuario user, Cliente cliente) {
         this.cliente = cliente;
         this.user = user;
@@ -117,18 +109,13 @@ public class MsgDireta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviarActionPerformed
-        if(!txtMensagem.getText().equals("")&& cliente != null)
+        if(!txtMensagem.getText().equals(""))
         {
             cliente.sendMessage(user, txtMensagem.getText());
             txtChat.setText(txtChat.getText() + "You: " + txtMensagem.getText()+"\n");
             txtMensagem.setText("");
         }
-        else if(!txtMensagem.getText().equals(""))
-        {
-            servidor.sendMessage(user, "Server: " + txtMensagem.getText());
-            txtChat.setText(txtChat.getText() + txtMensagem.getText()+"\n");
-            txtMensagem.setText("");
-        }
+        
         btEnviar.transferFocusBackward();
     }//GEN-LAST:event_btEnviarActionPerformed
 

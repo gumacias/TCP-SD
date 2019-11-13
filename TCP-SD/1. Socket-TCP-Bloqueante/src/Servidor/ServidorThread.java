@@ -85,8 +85,6 @@ public class ServidorThread {
                             }
                             protocol = new Protocolo(lServico.getServicos(), "listarServicos");
                             os.writeUTF(gson.toJson(protocol));
-                            //writer.write(gson.toJson(lista));
-                            //writer.close();
                             break;
                         case "logout":
                             protocol.setAction("logout");
@@ -118,9 +116,17 @@ public class ServidorThread {
                             break;
                         case "mensagemDireta":
                             protocol.setRemetente(user);
-                            DataOutputStream destino = broadcast.get(
-                                    lista.getCliente().indexOf(protocol.getDestinatario())
-                            );
+                            DataOutputStream destino;
+                            int i = 0;
+                            for(Usuario usuario : (ArrayList<Usuario>)lista.getCliente())
+                            {
+                                if(usuario.getNome().equals(protocol.getDestinatario().getNome())&&
+                                    usuario.getIp().equals(protocol.getDestinatario().getIp()))
+                                    break;
+                                i++;
+                            
+                            }
+                            destino = broadcast.get(i);
                             protocol.setDestinatario(null);
                             destino.writeUTF(gson.toJson(protocol));
                             break;
@@ -136,19 +142,6 @@ public class ServidorThread {
             }
         }
     };
-
-    public void sendMessage(Usuario user, String msg) {
-        protocol = new Protocolo(msg, user);
-        protocol.setRemetente(user);
-        protocol.setDestinatario(null);
-        DataOutputStream os = broadcast.get(
-                                    lista.getCliente().indexOf(user));
-        try {
-            os.writeUTF(gson.toJson(protocol));
-        } catch (IOException ex) {
-            System.out.println("Não foi possivel enviar a mensagem ao servidor");
-        }
-    }
 
     public void sendBroadcast(String msg) {
         protocol = new Protocolo("Server: " + msg);

@@ -44,6 +44,7 @@ public class Servidor extends javax.swing.JFrame {
     }
 
     public void atualizaServico() {
+        System.out.println("Servidor att");
         pnServicos.removeAll();
         lServico.forEach((servico) -> {
             pnServicos.add(addServico(servico));
@@ -248,6 +249,7 @@ public class Servidor extends javax.swing.JFrame {
 
     private void btEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviarActionPerformed
         atualizaCliente();
+        atualizaServico();
         if (!txtMensagem.getText().equals("")) {
             servidor.sendBroadcast(txtMensagem.getText());
             txtChat.setText(txtChat.getText() + "Server: " + txtMensagem.getText() + "\n");
@@ -297,12 +299,6 @@ public class Servidor extends javax.swing.JFrame {
         JPanel nCliente = new JPanel();
         nCliente.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         nCliente.setSize(145, 25);
-        nCliente.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                mouseClick(evt, user);
-            }
-        });
         lblNome.setText("Nome: ");
 
         usrNome.setText(user.getNome());
@@ -328,9 +324,6 @@ public class Servidor extends javax.swing.JFrame {
         return nCliente;
     }
 
-    private void mouseClick(java.awt.event.MouseEvent evt, Usuario user) {
-        new MsgDireta(user, servidor).setVisible(true);
-    }
 
     private JPanel addServico(Servico servico) {
         JPanel nServico = new JPanel();
@@ -339,15 +332,10 @@ public class Servidor extends javax.swing.JFrame {
         JLabel srvSalario = new JLabel();
         JLabel lblDescricao = new JLabel();
         JLabel srvDescricao = new JLabel();
-        JButton btIncreva = new JButton("Me inscrever");
+        
 
         nServico.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         nServico.setSize(145, 75);
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                srvClicked(evt, servico);
-            }
-        });
 
         lblCargo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblCargo.setText(servico.getCargo());
@@ -377,7 +365,6 @@ public class Servidor extends javax.swing.JFrame {
                                 .addContainerGap())
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(25, 25, 25)
-                                .addComponent(btIncreva)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -394,15 +381,9 @@ public class Servidor extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(lblDescricao)
                                         .addComponent(srvDescricao))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btIncreva, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         return nServico;
-    }
-
-    private void srvClicked(java.awt.event.MouseEvent evt, Servico servico) {
-        // TODO add your handling code here:
-        //servico.getEmpregador();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

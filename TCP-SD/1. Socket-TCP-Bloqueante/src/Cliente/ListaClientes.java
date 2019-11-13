@@ -55,4 +55,9 @@ public class ListaClientes {
     {
         return saida;
     }
+
+    public void setListaCliente(ArrayList<Usuario> listaCliente) {
+        this.listaCliente = listaCliente;
+    }
+    
 }

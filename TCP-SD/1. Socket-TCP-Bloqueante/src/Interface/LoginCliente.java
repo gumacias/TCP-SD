@@ -6,8 +6,16 @@
 package Interface;
 
 import Cliente.Cliente;
+import Cliente.ListaClientes;
+import Cliente.Usuario;
+import Servidor.ListaServicos;
+import Servidor.Servico;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -16,6 +24,8 @@ import java.awt.FlowLayout;
 public class LoginCliente extends javax.swing.JFrame {
 
     Cliente cliente = null;
+    private final ListaClientes lista = ListaClientes.getInstance();
+    private final ListaServicos lServico = ListaServicos.getInstance();
 
     /**
      * Creates new form LoginCliente
@@ -24,6 +34,32 @@ public class LoginCliente extends javax.swing.JFrame {
         //painel.setBorder(BorderFactory.createTitledBorder("Borda"));
         initComponents();
         this.setTitle("Intermediador de servicos");
+    }
+
+    public void atualizaCliente() {
+        pnClientes.removeAll();
+        pnClientes1.removeAll();
+        lista.getCliente().forEach((user) -> {
+            pnClientes.add(addCliente((Usuario)user));
+            pnClientes1.add(addCliente((Usuario)user));
+        });
+        pnClientes.revalidate();
+        pnClientes.repaint();
+        pnClientes1.revalidate();
+        pnClientes1.repaint();
+    }
+
+    public void atualizaServico() {
+        pnServicos.removeAll();
+        pnServicos1.removeAll();
+        lServico.getServicos().forEach((servico) -> {
+            pnServicos.add(addServico((Servico)servico));
+            pnServicos1.add(addServico((Servico)servico));
+        });
+        pnServicos.revalidate();
+        pnServicos.repaint();
+        pnServicos1.revalidate();
+        pnServicos1.repaint();
     }
 
     /**
@@ -447,16 +483,15 @@ public class LoginCliente extends javax.swing.JFrame {
         if (!txtPorta.getText().equals("") && !txtIp.getText().equals("")
                 && !txtNome.getText().equals("")) {
             CardLayout cl = (CardLayout) pnTela.getLayout();
-            if(rbEmpregador.isSelected())
-            {
+            if (rbEmpregador.isSelected()) {
                 cliente = new Cliente(txtNome.getText(),
-                        txtIp.getText(), Integer.parseInt(txtPorta.getText()), "empregador");
+                        txtIp.getText(), Integer.parseInt(txtPorta.getText()),
+                        "empregador");
                 cl.show(pnTela, "emp");
-            }
-            else
-            {
-                    cliente = new Cliente(txtNome.getText(),
-                        txtIp.getText(), Integer.parseInt(txtPorta.getText()), "empregado");
+            } else {
+                cliente = new Cliente(txtNome.getText(),
+                        txtIp.getText(), Integer.parseInt(txtPorta.getText()),
+                        "empregado");
                 cl.show(pnTela, "main");
             }
 
@@ -470,6 +505,8 @@ public class LoginCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviarActionPerformed
+        atualizaCliente();
+        atualizaServico();
         if (!txtMensagem.getText().equals("")) {
             cliente.sendBroadcast(txtMensagem.getText());
             txtMensagem.setText("");
@@ -492,6 +529,8 @@ public class LoginCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_closeClient
 
     private void btEnviar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviar1ActionPerformed
+        atualizaCliente();
+        atualizaServico();
         if (!txtMensagem.getText().equals("")) {
             cliente.sendBroadcast(txtMensagem.getText());
             txtMensagem.setText("");
@@ -510,6 +549,9 @@ public class LoginCliente extends javax.swing.JFrame {
     private void btCadastraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastraActionPerformed
         cliente.cadastrarServico(txtCargo.getText(), Float.parseFloat(txtSalario.getText()),
                 txtDescricao.getText());
+        txtCargo.setText("");
+        txtSalario.setText("");
+        txtDescricao.setText("");
     }//GEN-LAST:event_btCadastraActionPerformed
 
     /**
@@ -541,10 +583,126 @@ public class LoginCliente extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new LoginCliente().setVisible(true);
             }
         });
+    }
+
+    private JPanel addCliente(Usuario user) {
+        JLabel lblNome = new javax.swing.JLabel();
+        JLabel usrNome = new javax.swing.JLabel();
+        JPanel nCliente = new JPanel();
+        nCliente.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        nCliente.setSize(145, 25);
+        nCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                mouseClick(evt, user);
+            }
+        });
+        lblNome.setText("Nome: ");
+
+        usrNome.setText(user.getNome());
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(nCliente);
+        nCliente.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lblNome)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(usrNome)
+                                .addContainerGap(51, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblNome)
+                                .addComponent(usrNome))
+        );
+
+        return nCliente;
+    }
+
+    private void mouseClick(java.awt.event.MouseEvent evt, Usuario user) {
+        new MsgDireta(user, cliente).setVisible(true);
+    }
+
+    private JPanel addServico(Servico servico) {
+        JPanel nServico = new JPanel();
+        JLabel lblCarg = new JLabel();
+        JLabel lblSal = new JLabel();
+        JLabel srvSalario = new JLabel();
+        JLabel lblDesc = new JLabel();
+        JLabel srvDescricao = new JLabel();
+        JButton btInscreva = new JButton("Me inscrever");
+        btInscreva.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                srvClicked(evt, servico);
+            }
+        });
+
+        nServico.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        nServico.setSize(145, 75);
+
+        lblCarg.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblCarg.setText(servico.getCargo());
+        lblSal.setText("Salario:");
+        srvSalario.setText(Float.toString(servico.getSalario()));
+        lblDesc.setText("Descricao:");
+        srvDescricao.setText(servico.getDescricao());
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(nServico);
+        nServico.setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(2, 2, 2)
+                                                .addComponent(lblSal)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(lblCarg)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(srvSalario)
+                                                .addGap(0, 2, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblDesc)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(srvDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addContainerGap())
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(btInscreva)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblCarg)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(lblSal)
+                                                        .addComponent(srvSalario))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblDesc)
+                                        .addComponent(srvDescricao))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btInscreva, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        return nServico;
+    }
+
+    private void srvClicked(java.awt.event.ActionEvent evt, Servico servico) {
+        
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
