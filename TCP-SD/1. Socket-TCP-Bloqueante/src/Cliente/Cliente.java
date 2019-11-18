@@ -1,6 +1,7 @@
 package Cliente;
 
 import Interface.LoginCliente;
+import Interface.MsgDireta;
 import Servidor.ListaServicos;
 import Servidor.Protocolo;
 import Servidor.Servico;
@@ -26,6 +27,7 @@ public class Cliente {
     private final ListaClientes lista = ListaClientes.getInstance();
     private final ListaServicos lServico = ListaServicos.getInstance();
     LoginCliente log;
+    ArrayList <MsgDireta> msgs = new ArrayList();
     
     public Cliente(String nome, String serverHostname, int port, String tipo, LoginCliente log) {
         protocolo = new Protocolo("login", nome, tipo);
@@ -102,6 +104,11 @@ public class Cliente {
                             log.notifica();
                             lServico.setListaServico(protocolo.getServicos());
                             break;
+                        case "mensagemDireta":
+                            for(MsgDireta ms: msgs)
+                                if(ms.getUser().getNome().equals(protocolo.getRemetente().getNome()))
+                                    ms.notifica(protocolo.getMensagem());
+                            break;
                         default:
                             break;
                     }
@@ -126,6 +133,11 @@ public class Cliente {
             System.out.println("Desconectado do servidor");
         }
         
+    }
+    
+    public void addMsg(MsgDireta msger)
+    {
+        msgs.add(msger);
     }
 
     /*public static void main(String[] args) throws IOException {

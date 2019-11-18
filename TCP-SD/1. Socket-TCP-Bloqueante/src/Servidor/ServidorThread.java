@@ -111,6 +111,7 @@ public class ServidorThread {
                             for (DataOutputStream cliente : broadcast) {
                                 cliente.writeUTF(gson.toJson(protocol));
                             }
+                            serv.notifica(protocol.getMensagem());
                             break;
                         case "cadastrarServico":
                             protocol.getServico().setEmpregador(user);
@@ -125,6 +126,7 @@ public class ServidorThread {
                             protocol.setRemetente(user);
                             DataOutputStream destino;
                             int i = 0;
+                            protocol.setMensagem(protocol.getNome()+ ": " + protocol.getMensagem());
                             for(Usuario usuario : (ArrayList<Usuario>)lista.getCliente())
                             {
                                 if(usuario.getNome().equals(protocol.getDestinatario().getNome())&&

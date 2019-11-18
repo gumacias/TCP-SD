@@ -12,7 +12,7 @@ import Cliente.Usuario;
  *
  * @author Gustavo
  */
-public class MsgDireta extends javax.swing.JFrame {
+public class MsgDireta extends javax.swing.JFrame implements AttCli {
     
     Cliente cliente;
     Usuario user = null;
@@ -26,7 +26,16 @@ public class MsgDireta extends javax.swing.JFrame {
         this.cliente = cliente;
         this.user = user;
         initComponents();
-        this.setTitle("Chat com" + user.getNome() );
+        this.setTitle("Chat com " + user.getNome() );
+        lblNome.setText(user.getNome());
+    }
+
+    public Usuario getUser() {
+        return user;
+    }
+
+    public void setUser(Usuario user) {
+        this.user = user;
     }
 
     /**
@@ -128,4 +137,14 @@ public class MsgDireta extends javax.swing.JFrame {
     private javax.swing.JTextArea txtChat;
     private javax.swing.JTextField txtMensagem;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void notifica() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void notifica(String msg) {
+        txtChat.setText(txtChat.getText() + msg + "\n");
+    }
 }
