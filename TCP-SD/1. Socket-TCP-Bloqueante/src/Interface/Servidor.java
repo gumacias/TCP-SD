@@ -63,7 +63,7 @@ public class Servidor extends javax.swing.JFrame implements AttCli {
     }
 
     public void atualizaMensagem(String msg) {
-        txtChat.setText(txtChat.getText() + msg);
+        txtChat.setText(txtChat.getText() + msg + "\n");
     }
 
     /**
@@ -257,8 +257,8 @@ public class Servidor extends javax.swing.JFrame implements AttCli {
     }//GEN-LAST:event_btConectarActionPerformed
 
     private void btEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviarActionPerformed
-        atualizaCliente();
-        atualizaServico();
+        //atualizaCliente();
+        //atualizaServico();
         if (!txtMensagem.getText().equals("")) {
             servidor.sendBroadcast(txtMensagem.getText());
             txtChat.setText(txtChat.getText() + "Server: " + txtMensagem.getText() + "\n");

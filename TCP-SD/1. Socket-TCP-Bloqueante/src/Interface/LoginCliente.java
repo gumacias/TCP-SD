@@ -28,7 +28,6 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     {
         atualizaCliente();
         atualizaServico();
-        atualizaServico();
     }
     
     public void notifica(String msg)
