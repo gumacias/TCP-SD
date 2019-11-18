@@ -20,15 +20,14 @@ public class Cliente {
     Socket clientSocket = null;
     boolean flagSair = false;
     public boolean flagMsg = false;
-    private String msg = null;
-    LoginCliente pai;
     Gson gson = new Gson();
     Protocolo protocolo;
     String enviar;
     private final ListaClientes lista = ListaClientes.getInstance();
     private final ListaServicos lServico = ListaServicos.getInstance();
+    LoginCliente log;
     
-    public Cliente(String nome, String serverHostname, int port, String tipo) {
+    public Cliente(String nome, String serverHostname, int port, String tipo, LoginCliente log) {
         protocolo = new Protocolo("login", nome, tipo);
         enviar = gson.toJson(protocolo);
         System.out.println("Attemping to connect to host "
@@ -49,6 +48,7 @@ public class Cliente {
                     + "a conexão com:" + serverHostname);
             System.exit(0);
         }
+        this.log = log;
         new Thread(getMessage).start();
     }
     
@@ -90,13 +90,16 @@ public class Cliente {
                     switch (protocolo.getAction()) {
                         case "listarUsuarios":
                             lista.setListaCliente(protocolo.getUsuarios());
+                            log.notifica();
                             break;
                         case "broadcast":
-                            msg = protocolo.getNome();
+                            log.notifica(protocolo.getMensagem());
                             break;
                         case "logout":
+                            log.notifica();
                             return;
                         case "listarServicos":
+                            log.notifica();
                             lServico.setListaServico(protocolo.getServicos());
                             break;
                         default:
@@ -113,10 +116,9 @@ public class Cliente {
     };
     
     public void logout() {
-        protocolo.setAction("logout");
-        enviar = gson.toJson(protocolo);
+        protocolo = new Protocolo();
         try {
-            out.writeUTF(enviar);
+            out.writeUTF(gson.toJson(protocolo));
             clientSocket.close();
             out.close();
             in.close();

@@ -15,6 +15,11 @@ public class Protocolo {
     private ArrayList<Usuario> usuarios;
     private ArrayList<Servico> servicos;
 
+    public Protocolo()
+    {
+        this.action = "logout";
+    }
+    
     public Protocolo(String mensagem)
     {
         this.action = "broadcast";

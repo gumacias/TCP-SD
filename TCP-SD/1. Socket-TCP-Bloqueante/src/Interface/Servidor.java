@@ -20,7 +20,16 @@ import javax.swing.JPanel;
  *
  * @author Gustavo
  */
-public class Servidor extends javax.swing.JFrame {
+public class Servidor extends javax.swing.JFrame implements AttCli {
+
+    public void notifica() {
+        atualizaCliente();
+        atualizaServico();
+    }
+
+    public void notifica(String msg) {
+        atualizaMensagem(msg);
+    }
 
     private ArrayList<Usuario> lista = ListaClientes.getInstance().getCliente();
     private ArrayList<Servico> lServico = ListaServicos.getInstance().getServicos();
@@ -239,7 +248,7 @@ public class Servidor extends javax.swing.JFrame {
 
     private void btConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConectarActionPerformed
         if (!txtPorta.getText().equals("")) {
-            servidor = new ServidorThread(Integer.parseInt(txtPorta.getText()));
+            servidor = new ServidorThread(Integer.parseInt(txtPorta.getText()), this);
             CardLayout cl = (CardLayout) pnTela.getLayout();
             cl.show(pnTela, "main");
         } else {
@@ -324,7 +333,6 @@ public class Servidor extends javax.swing.JFrame {
         return nCliente;
     }
 
-
     private JPanel addServico(Servico servico) {
         JPanel nServico = new JPanel();
         JLabel lblCargo = new JLabel();
@@ -332,7 +340,6 @@ public class Servidor extends javax.swing.JFrame {
         JLabel srvSalario = new JLabel();
         JLabel lblDescricao = new JLabel();
         JLabel srvDescricao = new JLabel();
-        
 
         nServico.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         nServico.setSize(145, 75);

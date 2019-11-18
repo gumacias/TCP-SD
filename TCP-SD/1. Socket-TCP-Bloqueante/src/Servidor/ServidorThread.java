@@ -4,6 +4,7 @@ package Servidor;
 // recebe uma linha e ecoa a linha recebida.
 import Cliente.Usuario;
 import Cliente.ListaClientes;
+import Interface.Servidor;
 import com.google.gson.Gson;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -21,9 +22,11 @@ public class ServidorThread {
     int porta;
     Protocolo protocol;
     Gson gson = new Gson();
+    Servidor serv;
     
-    public ServidorThread(int porta) {
+    public ServidorThread(int porta, Servidor serv) {
         this.porta = porta;
+        this.serv = serv;
         new Thread(openServer).start();
     }
 
@@ -35,7 +38,7 @@ public class ServidorThread {
                 try {
                     while (true) {
                         System.out.println("Aguardando conexão");
-                        new ServidorThread(serverSocket.accept());
+                        new ServidorThread(serverSocket.accept(), serv);
                         System.out.println("Cliente conectado.");
                     }
                 } catch (IOException e) {
@@ -49,8 +52,9 @@ public class ServidorThread {
         }
     };
 
-    private ServidorThread(Socket clientSoc) {
+    private ServidorThread(Socket clientSoc, Servidor serv) {
         clientSocket = clientSoc;
+        this.serv = serv;
         new Thread(server).start();
     }
     private final Runnable server = new Runnable() {
@@ -74,7 +78,7 @@ public class ServidorThread {
                         clientSocket.getPort(), protocol.getTipo());
                 lista.add(user);
                 lista.add(os);
-
+                
                 do {
                     switch (protocol.getAction()) {
                         case "login":
@@ -85,6 +89,7 @@ public class ServidorThread {
                             }
                             protocol = new Protocolo(lServico.getServicos(), "listarServicos");
                             os.writeUTF(gson.toJson(protocol));
+                            serv.notifica();
                             break;
                         case "logout":
                             protocol.setAction("logout");
@@ -99,6 +104,7 @@ public class ServidorThread {
                             //writer.write(gson.toJson(lista));
                             //writer.close();
                             clientSocket.close();
+                            serv.notifica();
                             return;
                         case "broadcast":
                             protocol = new Protocolo(user.getNome() + ": " + protocol.getMensagem());
@@ -113,6 +119,7 @@ public class ServidorThread {
                             for (DataOutputStream cliente : broadcast) {
                                 cliente.writeUTF(gson.toJson(protocol));
                             }
+                            serv.notifica();
                             break;
                         case "mensagemDireta":
                             protocol.setRemetente(user);

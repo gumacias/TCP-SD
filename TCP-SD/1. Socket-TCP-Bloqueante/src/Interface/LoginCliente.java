@@ -21,8 +21,21 @@ import javax.swing.JPanel;
  *
  * @author Gustavo
  */
-public class LoginCliente extends javax.swing.JFrame {
-
+public class LoginCliente extends javax.swing.JFrame implements AttCli {
+    
+    @Override
+    public void notifica()
+    {
+        atualizaCliente();
+        atualizaServico();
+    }
+    
+    public void notifica(String msg)
+    {
+        txtChat.setText(txtChat.getText() + msg + "\n");
+        txtChat1.setText(txtChat1.getText() + msg + "\n");
+    }
+    
     Cliente cliente = null;
     private final ListaClientes lista = ListaClientes.getInstance();
     private final ListaServicos lServico = ListaServicos.getInstance();
@@ -281,6 +294,7 @@ public class LoginCliente extends javax.swing.JFrame {
 
         lblSaud.setText("Bem Vindo!");
 
+        pnServicos.setMaximumSize(new java.awt.Dimension(145, 32767));
         scrollServicos.setViewportView(pnServicos);
 
         lblOnline.setText("Clientes Online :");
@@ -291,9 +305,13 @@ public class LoginCliente extends javax.swing.JFrame {
 
         lblCargo.setText("Cargo:");
 
+        txtCargo.setNextFocusableComponent(txtSalario);
+
         lblSalario.setText("Salario:");
 
         lblDescricao.setText("Descricao:");
+
+        txtDescricao.setNextFocusableComponent(btCadastra);
 
         btCadastra.setText("Cadastrar Servico");
         btCadastra.addActionListener(new java.awt.event.ActionListener() {
@@ -303,6 +321,7 @@ public class LoginCliente extends javax.swing.JFrame {
         });
 
         txtSalario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.##"))));
+        txtSalario.setNextFocusableComponent(txtDescricao);
 
         javax.swing.GroupLayout pnPrincipalEmpLayout = new javax.swing.GroupLayout(pnPrincipalEmp);
         pnPrincipalEmp.setLayout(pnPrincipalEmpLayout);
@@ -420,6 +439,7 @@ public class LoginCliente extends javax.swing.JFrame {
 
         lblSaud1.setText("Bem Vindo!");
 
+        pnServicos1.setMaximumSize(new java.awt.Dimension(140, 150));
         scrollServicos1.setViewportView(pnServicos1);
 
         lblOnline1.setText("Clientes Online :");
@@ -486,12 +506,12 @@ public class LoginCliente extends javax.swing.JFrame {
             if (rbEmpregador.isSelected()) {
                 cliente = new Cliente(txtNome.getText(),
                         txtIp.getText(), Integer.parseInt(txtPorta.getText()),
-                        "empregador");
+                        "empregador", this);
                 cl.show(pnTela, "emp");
             } else {
                 cliente = new Cliente(txtNome.getText(),
                         txtIp.getText(), Integer.parseInt(txtPorta.getText()),
-                        "empregado");
+                        "empregado", this);
                 cl.show(pnTela, "main");
             }
 
@@ -515,7 +535,6 @@ public class LoginCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btEnviarActionPerformed
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
-        System.out.println("Foi");
         CardLayout cl = (CardLayout) pnTela.getLayout();
         cl.show(pnTela, "login");
         cliente.logout();
@@ -531,11 +550,11 @@ public class LoginCliente extends javax.swing.JFrame {
     private void btEnviar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnviar1ActionPerformed
         atualizaCliente();
         atualizaServico();
-        if (!txtMensagem.getText().equals("")) {
-            cliente.sendBroadcast(txtMensagem.getText());
-            txtMensagem.setText("");
+        if (!txtMensagem1.getText().equals("")) {
+            cliente.sendBroadcast(txtMensagem1.getText());
+            txtMensagem1.setText("");
         }
-        btEnviar.transferFocusBackward();
+        btEnviar1.transferFocusBackward();
     }//GEN-LAST:event_btEnviar1ActionPerformed
 
     private void btSair1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSair1ActionPerformed
