@@ -814,4 +814,11 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     private javax.swing.JFormattedTextField txtPorta;
     private javax.swing.JFormattedTextField txtSalario;
     // End of variables declaration//GEN-END:variables
+
+    public void avisa(Usuario user, String msg) {
+        MsgDireta m = new MsgDireta(user, cliente);
+        m.setVisible(true);
+        m.notifica(msg);
+        cliente.addMsg(m);
+    }
 }

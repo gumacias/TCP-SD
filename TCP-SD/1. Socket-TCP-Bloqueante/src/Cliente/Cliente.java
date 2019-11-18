@@ -86,6 +86,7 @@ public class Cliente {
     private Runnable getMessage = new Runnable() {
         public void run() {
             try {
+                boolean flag = true;
                 while ((receber = in.readUTF()) != null) {
                     System.out.println("Servidor retornou: " + receber);
                     protocolo = gson.fromJson(receber, Protocolo.class);
@@ -107,7 +108,13 @@ public class Cliente {
                         case "mensagemDireta":
                             for(MsgDireta ms: msgs)
                                 if(ms.getUser().getNome().equals(protocolo.getRemetente().getNome()))
+                                {
                                     ms.notifica(protocolo.getMensagem());
+                                    flag = false;
+                                }
+                            if(flag)
+                                log.avisa(protocolo.getRemetente(), protocolo.getMensagem());
+                            flag = true;
                             break;
                         default:
                             break;
