@@ -145,6 +145,6 @@ public class MsgDireta extends javax.swing.JFrame implements AttCli {
 
     @Override
     public void notifica(String msg) {
-        txtChat.setText(txtChat.getText() + msg + "\n");
+        txtChat.setText(txtChat.getText() + user.getNome() + ": " + msg + "\n");
     }
 }

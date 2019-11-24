@@ -126,7 +126,7 @@ public class ServidorThread {
                             protocol.setRemetente(user);
                             DataOutputStream destino;
                             int i = 0;
-                            protocol.setMensagem(protocol.getRemetente().getNome()+ ": " + protocol.getMensagem());
+                            protocol.setMensagem(protocol.getMensagem());
                             for(Usuario usuario : (ArrayList<Usuario>)lista.getCliente())
                             {
                                 if(usuario.getNome().equals(protocol.getDestinatario().getNome())&&
