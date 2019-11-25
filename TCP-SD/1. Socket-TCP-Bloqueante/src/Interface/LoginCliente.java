@@ -23,11 +23,13 @@ import javax.swing.JPanel;
  */
 public class LoginCliente extends javax.swing.JFrame implements AttCli {
     
+    boolean emp;
+    
     @Override
     public void notifica()
     {
         atualizaCliente();
-        atualizaServico();
+        atualizaServico("");
     }
     
     public void notifica(String msg)
@@ -62,13 +64,24 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         pnClientes1.repaint();
     }
 
-    public void atualizaServico() {
+    public void atualizaServico(String nome) {
         pnServicos.removeAll();
         pnServicos1.removeAll();
-        lServico.getServicos().forEach((servico) -> {
-            pnServicos.add(addServico((Servico)servico));
-            pnServicos1.add(addServico((Servico)servico));
-        });
+        if(nome.equals(""))
+        {
+            lServico.getServicos().forEach((servico) -> {
+                pnServicos.add(addServico((Servico)servico));
+                pnServicos1.add(addServico((Servico)servico));
+            });
+        }
+        else
+        {
+            for(Servico servico : (ArrayList<Servico>)lServico.getServicos())
+            {
+                if(servico.getCargo().contains(nome))
+                    pnServicos1.add(addServico((Servico)servico));
+            }
+        }
         pnServicos.revalidate();
         pnServicos.repaint();
         pnServicos1.revalidate();
@@ -132,6 +145,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         scrollClientes1 = new javax.swing.JScrollPane();
         pnClientes1 = new javax.swing.JPanel();
         btAtualizar = new javax.swing.JButton();
+        txtBusca = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -466,7 +480,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         pnClientes1.setPreferredSize(new java.awt.Dimension(145, 278));
         scrollClientes1.setViewportView(pnClientes1);
 
-        btAtualizar.setText("Atualizar");
+        btAtualizar.setText("Buscar");
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAtualizarActionPerformed(evt);
@@ -481,10 +495,11 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                 .addContainerGap()
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
-                        .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(scrollServicos1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnPrincipalLayout.createSequentialGroup()
-                                .addGap(42, 42, 42)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnPrincipalLayout.createSequentialGroup()
+                                .addComponent(txtBusca)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btAtualizar)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnChat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -494,7 +509,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
                         .addComponent(lblOnline1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollClientes1))
+                    .addComponent(scrollClientes1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnPrincipalLayout.setVerticalGroup(
@@ -506,14 +521,18 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                     .addComponent(lblOnline1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnChat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrollClientes1)
+                    .addGroup(pnPrincipalLayout.createSequentialGroup()
+                        .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnChat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(scrollClientes1))
+                        .addContainerGap())
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
                         .addComponent(scrollServicos1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btAtualizar)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btAtualizar))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pnTela.add(pnPrincipal, "main");
@@ -540,11 +559,13 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                 cliente = new Cliente(txtNome.getText(),
                         txtIp.getText(), Integer.parseInt(txtPorta.getText()),
                         "empregador", this);
+                emp = true;
                 cl.show(pnTela, "emp");
             } else {
                 cliente = new Cliente(txtNome.getText(),
                         txtIp.getText(), Integer.parseInt(txtPorta.getText()),
                         "empregado", this);
+                emp = false;
                 cl.show(pnTela, "main");
             }
 
@@ -603,11 +624,11 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     }//GEN-LAST:event_btCadastraActionPerformed
 
     private void btAtualizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizaActionPerformed
-        atualizaServico();
+        atualizaServico("");
     }//GEN-LAST:event_btAtualizaActionPerformed
 
     private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
-        atualizaServico();
+        atualizaServico(txtBusca.getText());
     }//GEN-LAST:event_btAtualizarActionPerformed
 
     /**
@@ -696,7 +717,11 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         JLabel srvSalario = new JLabel();
         JLabel lblDesc = new JLabel();
         JLabel srvDescricao = new JLabel();
-        JButton btInscreva = new JButton("Me inscrever");
+        JButton btInscreva = new JButton();
+        if(emp)
+            btInscreva.setText("Lista de Interessados");
+        else
+            btInscreva.setText("Me Inscrever");
         btInscreva.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -759,7 +784,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     }
 
     private void srvClicked(java.awt.event.ActionEvent evt, Servico servico) {
-        
+            
         
     }
 
@@ -802,6 +827,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     private javax.swing.JScrollPane scrollClientes1;
     private javax.swing.JScrollPane scrollServicos;
     private javax.swing.JScrollPane scrollServicos1;
+    private javax.swing.JTextField txtBusca;
     private javax.swing.JTextField txtCargo;
     private javax.swing.JTextArea txtChat;
     private javax.swing.JTextArea txtChat1;
