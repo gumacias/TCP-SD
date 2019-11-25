@@ -29,6 +29,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     public void notifica()
     {
         atualizaCliente();
+        atualizaServico();
         atualizaServico("");
     }
     
@@ -50,7 +51,6 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         initComponents();
         this.setTitle("Intermediador de servicos");
     }
-
     public void atualizaCliente() {
         pnClientes.removeAll();
         pnClientes1.removeAll();
@@ -63,27 +63,27 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         pnClientes1.revalidate();
         pnClientes1.repaint();
     }
-
-    public void atualizaServico(String nome) {
+    
+    public void atualizaServico()
+    {
         pnServicos.removeAll();
-        pnServicos1.removeAll();
-        if(nome.equals(""))
-        {
-            lServico.getServicos().forEach((servico) -> {
+        lServico.getServicos().forEach((servico) -> {
                 pnServicos.add(addServico((Servico)servico));
-                pnServicos1.add(addServico((Servico)servico));
             });
-        }
-        else
-        {
-            for(Servico servico : (ArrayList<Servico>)lServico.getServicos())
-            {
-                if(servico.getCargo().contains(nome))
-                    pnServicos1.add(addServico((Servico)servico));
-            }
-        }
         pnServicos.revalidate();
         pnServicos.repaint();
+    }
+
+    public void atualizaServico(String nome) {
+        pnServicos1.removeAll();
+        if(nome.equals(""))
+            lServico.getServicos().forEach((servico) -> {
+                pnServicos1.add(addServico((Servico)servico));
+            });
+        else
+            for(Servico servico : (ArrayList<Servico>)lServico.getServicos())
+                if(servico.getCargo().contains(nome))
+                    pnServicos1.add(addServico((Servico)servico));
         pnServicos1.revalidate();
         pnServicos1.repaint();
     }
@@ -624,7 +624,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     }//GEN-LAST:event_btCadastraActionPerformed
 
     private void btAtualizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizaActionPerformed
-        atualizaServico("");
+        atualizaServico();
     }//GEN-LAST:event_btAtualizaActionPerformed
 
     private void btAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAtualizarActionPerformed
@@ -680,9 +680,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
             }
         });
         lblNome.setText("Nome: ");
-
         usrNome.setText(user.getNome());
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(nCliente);
         nCliente.setLayout(layout);
         layout.setHorizontalGroup(
