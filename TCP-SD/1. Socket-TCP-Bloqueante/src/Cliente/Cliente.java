@@ -74,7 +74,7 @@ public class Cliente {
     }
     
     public void cadastrarServico(String cargo, float salario, String descricao) {
-        protocolo = new Protocolo(new Servico(cargo, descricao, salario));
+        protocolo = new Protocolo("cadastrarServico", new Servico(cargo, descricao, salario));
         try {
             out.writeUTF(gson.toJson(protocolo));
         } catch (IOException ex) {
@@ -82,8 +82,18 @@ public class Cliente {
             //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    public void interesseServico(Servico servico)
+    {
+        protocolo = new Protocolo("interesseServico", servico);
+        try {
+            out.writeUTF(gson.toJson(protocolo));
+        } catch (IOException ex) {
+            System.out.println("Desconectado do servidor");
+            //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+    }
     private Runnable getMessage = new Runnable() {
+        
         public void run() {
             try {
                 boolean flag = true;

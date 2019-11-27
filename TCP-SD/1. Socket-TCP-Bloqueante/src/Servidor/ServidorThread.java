@@ -64,6 +64,7 @@ public class ServidorThread {
             String line; // string para conter informações transferidas
             DataInputStream is; // cria um duto de entrada
             DataOutputStream os; // cria um duto de saída
+            int i;
             //FileWriter writer;
             //FileReader reader;
             try {
@@ -125,15 +126,28 @@ public class ServidorThread {
                         case "mensagemDireta":
                             protocol.setRemetente(user);
                             DataOutputStream destino;
-                            int i = 0;
-                            protocol.setMensagem(protocol.getMensagem());
+                            i = 0;
                             for(Usuario usuario : (ArrayList<Usuario>)lista.getCliente())
                             {
                                 if(usuario.getNome().equals(protocol.getDestinatario().getNome())&&
                                     usuario.getIp().equals(protocol.getDestinatario().getIp()))
                                     break;
                                 i++;
-                            
+                            }
+                            destino = broadcast.get(i);
+                            protocol.setDestinatario(null);
+                            destino.writeUTF(gson.toJson(protocol));
+                            break;
+                        case "interesseServico":
+                            break;
+                        case "contratacao":
+                            i = 0;
+                            for(Usuario usuario : (ArrayList<Usuario>)lista.getCliente())
+                            {
+                                if(usuario.getNome().equals(protocol.getDestinatario().getNome())&&
+                                    usuario.getIp().equals(protocol.getDestinatario().getIp()))
+                                    break;
+                                i++;
                             }
                             destino = broadcast.get(i);
                             protocol.setDestinatario(null);

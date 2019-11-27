@@ -53,7 +53,6 @@ public class Servidor extends javax.swing.JFrame implements AttCli {
     }
 
     public void atualizaServico() {
-        System.out.println("Servidor att");
         pnServicos.removeAll();
         lServico.forEach((servico) -> {
             pnServicos.add(addServico(servico));

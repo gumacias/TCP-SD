@@ -25,9 +25,9 @@ public class Protocolo {
         this.action = "broadcast";
         this.mensagem = mensagem;
     }
-    public Protocolo(Servico s)
+    public Protocolo(String action, Servico s)
     {
-        this.action = "cadastrarServico";
+        this.action = action;
         this.servico = s;
     }
     public Protocolo(String mensagem, Usuario destinatario)

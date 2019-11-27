@@ -11,6 +11,7 @@ import Cliente.Usuario;
 import Servidor.ListaServicos;
 import Servidor.Servico;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
@@ -22,23 +23,21 @@ import javax.swing.JPanel;
  * @author Gustavo
  */
 public class LoginCliente extends javax.swing.JFrame implements AttCli {
-    
+
     boolean emp;
-    
+
     @Override
-    public void notifica()
-    {
+    public void notifica() {
         atualizaCliente();
         atualizaServico();
         atualizaServico("");
     }
-    
-    public void notifica(String msg)
-    {
+
+    public void notifica(String msg) {
         txtChat.setText(txtChat.getText() + msg + "\n");
         txtChat1.setText(txtChat1.getText() + msg + "\n");
     }
-    
+
     Cliente cliente = null;
     private final ListaClientes lista = ListaClientes.getInstance();
     private final ListaServicos lServico = ListaServicos.getInstance();
@@ -51,39 +50,42 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         initComponents();
         this.setTitle("Intermediador de servicos");
     }
+
     public void atualizaCliente() {
         pnClientes.removeAll();
         pnClientes1.removeAll();
         lista.getCliente().forEach((user) -> {
-            pnClientes.add(addCliente((Usuario)user));
-            pnClientes1.add(addCliente((Usuario)user));
+            pnClientes.add(addCliente((Usuario) user));
+            pnClientes1.add(addCliente((Usuario) user));
         });
         pnClientes.revalidate();
         pnClientes.repaint();
         pnClientes1.revalidate();
         pnClientes1.repaint();
     }
-    
-    public void atualizaServico()
-    {
+
+    public void atualizaServico() {
         pnServicos.removeAll();
         lServico.getServicos().forEach((servico) -> {
-                pnServicos.add(addServico((Servico)servico));
-            });
+            pnServicos.add(addServico((Servico) servico));
+        });
         pnServicos.revalidate();
         pnServicos.repaint();
     }
 
     public void atualizaServico(String nome) {
         pnServicos1.removeAll();
-        if(nome.equals(""))
+        if (nome.equals("")) {
             lServico.getServicos().forEach((servico) -> {
-                pnServicos1.add(addServico((Servico)servico));
+                pnServicos1.add(addServico((Servico) servico));
             });
-        else
-            for(Servico servico : (ArrayList<Servico>)lServico.getServicos())
-                if(servico.getCargo().contains(nome))
-                    pnServicos1.add(addServico((Servico)servico));
+        } else {
+            for (Servico servico : (ArrayList<Servico>) lServico.getServicos()) {
+                if (servico.getCargo().contains(nome)) {
+                    pnServicos1.add(addServico((Servico) servico));
+                }
+            }
+        }
         pnServicos1.revalidate();
         pnServicos1.repaint();
     }
@@ -495,12 +497,12 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                 .addContainerGap()
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
-                        .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(scrollServicos1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnPrincipalLayout.createSequentialGroup()
+                        .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnPrincipalLayout.createSequentialGroup()
                                 .addComponent(txtBusca)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btAtualizar)))
+                                .addComponent(btAtualizar))
+                            .addComponent(scrollServicos1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnChat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblSaud1))
@@ -521,18 +523,15 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                     .addComponent(lblOnline1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnChat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollClientes1)
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
-                        .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnChat1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(scrollClientes1))
-                        .addContainerGap())
-                    .addGroup(pnPrincipalLayout.createSequentialGroup()
-                        .addComponent(scrollServicos1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(scrollServicos1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btAtualizar))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(btAtualizar))))
+                .addContainerGap())
         );
 
         pnTela.add(pnPrincipal, "main");
@@ -716,10 +715,11 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         JLabel lblDesc = new JLabel();
         JLabel srvDescricao = new JLabel();
         JButton btInscreva = new JButton();
-        if(emp)
-            btInscreva.setText("Lista de Interessados");
-        else
+        if (emp) {
+            btInscreva.setText("Interessados");
+        } else {
             btInscreva.setText("Me Inscrever");
+        }
         btInscreva.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -728,7 +728,8 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         });
 
         nServico.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        nServico.setSize(145, 75);
+        nServico.setMaximumSize(new Dimension(130, 75));
+        nServico.setSize(new Dimension(120, 75));
 
         lblCarg.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblCarg.setText(servico.getCargo());
@@ -744,46 +745,44 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGap(2, 2, 2)
-                                                .addComponent(lblSal)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(lblCarg)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(srvSalario)
-                                                .addGap(0, 2, Short.MAX_VALUE))
-                                        .addGroup(layout.createSequentialGroup()
                                                 .addComponent(lblDesc)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(srvDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addContainerGap())
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(25, 25, 25)
+                                                .addComponent(srvDescricao))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lblSal)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(lblCarg)
+                                                        .addComponent(srvSalario))))
+                                .addContainerGap(30, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btInscreva)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblCarg)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(lblSal)
-                                                        .addComponent(srvSalario))))
+                                .addComponent(lblCarg)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(srvSalario)
+                                        .addComponent(lblSal, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(lblDesc)
                                         .addComponent(srvDescricao))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btInscreva, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btInscreva, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         return nServico;
     }
 
     private void srvClicked(java.awt.event.ActionEvent evt, Servico servico) {
-            
-        
+        if (emp) {
+
+        } else
+            cliente.interesseServico(servico);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
