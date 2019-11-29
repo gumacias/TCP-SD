@@ -19,6 +19,19 @@ public class ListaClientes {
 
     public ListaClientes() {
     }
+    
+    public int getUsuarioIndex(Usuario user){
+        int i = 0;
+        for(Usuario usuario : (ArrayList<Usuario>)listaCliente)
+        {
+            if(usuario.getNome().equals(user.getNome())&&
+                usuario.getIp().equals(user.getIp())&&
+                usuario.getPorta()==user.getPorta())
+                break;
+            i++;
+        }
+        return i;
+    }
 
     public static synchronized ListaClientes getInstance(){
         if(uniqueInstance == null){

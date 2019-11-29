@@ -14,10 +14,17 @@ public class Protocolo {
     private Usuario remetente;
     private ArrayList<Usuario> usuarios;
     private ArrayList<Servico> servicos;
+    private ArrayList<Usuario> interessados;
 
     public Protocolo()
     {
         this.action = "logout";
+    }
+    public Protocolo(ServEmp serv)
+    {
+        this.action = "listarInteressados";
+        this.servico = serv.getServico();
+        this.interessados = serv.getListaInteressados();
     }
     
     public Protocolo(String mensagem)

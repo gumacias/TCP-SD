@@ -5,6 +5,7 @@
  */
 package Servidor;
 
+import Cliente.Usuario;
 import java.util.ArrayList;
 
 /**
@@ -12,36 +13,73 @@ import java.util.ArrayList;
  * @author Gustavo
  */
 public class ListaServicos {
+
     private static ListaServicos uniqueInstance;
-    private ArrayList <Servico> listaServico = new ArrayList();
-    
+    private ArrayList<Servico> listaServico = new ArrayList();
+    private ArrayList<ServEmp> listInteresse = new ArrayList();
+
     public ListaServicos() {
     }
 
-    public static synchronized ListaServicos getInstance(){
-        if(uniqueInstance == null){
+    public static synchronized ListaServicos getInstance() {
+        if (uniqueInstance == null) {
             uniqueInstance = new ListaServicos();
         }
         return uniqueInstance;
     }
     
-    public void add(Servico servico)
+    public int getServIndex(Servico servico)
     {
+        int i = 0;
+        for(Servico s :(ArrayList<Servico>) listaServico){
+            if(s.getCargo().equals(servico.getCargo())&&
+                s.getDescricao().equals(servico.getDescricao())&&
+                s.getSalario() == servico.getSalario())
+                break;
+            i++;
+        }
+        return i;
+    }
+
+    public void add(Servico servico) {
         listaServico.add(servico);
+        listInteresse.add(new ServEmp(servico));
     }
-    
-    public void remove(Servico user)
-    {
-        listaServico.remove(user);
+
+    public ServEmp addInteressado(int i, Usuario user) {
+        
+        listInteresse.get(i).addInteressado(user);
+        return listInteresse.get(i);
+            
     }
-    
-    public ArrayList getServicos()
-    {
+
+    public void remove(Servico servico) {
+        int i = 0;
+        for(Servico s :(ArrayList<Servico>) listaServico){
+            if(s.getCargo().equals(servico.getCargo())&&
+                s.getDescricao().equals(servico.getDescricao())&&
+                s.getSalario() == servico.getSalario())
+                break;
+            i++;
+        }
+        listaServico.remove(i);
+        listInteresse.remove(i);
+    }
+
+    public ArrayList getServicos() {
         return listaServico;
     }
 
     public void setListaServico(ArrayList<Servico> listaServico) {
         this.listaServico = listaServico;
     }
-    
+
+    public ArrayList<ServEmp> getListInteresse() {
+        return listInteresse;
+    }
+
+    public void setListInteresse(ArrayList<ServEmp> listInteresse) {
+        this.listInteresse = listInteresse;
+    }
+
 }

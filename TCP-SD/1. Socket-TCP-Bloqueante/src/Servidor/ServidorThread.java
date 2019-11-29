@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServidorThread {
 
@@ -63,7 +65,7 @@ public class ServidorThread {
             Usuario user = null;
             String line; // string para conter informações transferidas
             DataInputStream is; // cria um duto de entrada
-            DataOutputStream os; // cria um duto de saída
+            DataOutputStream os = null; // cria um duto de saída
             int i;
             //FileWriter writer;
             //FileReader reader;
@@ -126,32 +128,25 @@ public class ServidorThread {
                         case "mensagemDireta":
                             protocol.setRemetente(user);
                             DataOutputStream destino;
-                            i = 0;
-                            for(Usuario usuario : (ArrayList<Usuario>)lista.getCliente())
-                            {
-                                if(usuario.getNome().equals(protocol.getDestinatario().getNome())&&
-                                    usuario.getIp().equals(protocol.getDestinatario().getIp()))
-                                    break;
-                                i++;
-                            }
+                            i = lista.getUsuarioIndex(protocol.getDestinatario());
                             destino = broadcast.get(i);
                             protocol.setDestinatario(null);
                             destino.writeUTF(gson.toJson(protocol));
                             break;
                         case "interesseServico":
+                            i = lServico.getServIndex(protocol.getServico());
+                            lServico.addInteressado(i, user);
+                            protocol = new Protocolo(lServico.getListInteresse().get(i));
+                            i = lista.getUsuarioIndex(protocol.getServico().getEmpregador());
+                            destino = broadcast.get(i);
+                            destino.writeUTF(gson.toJson(protocol));
                             break;
                         case "contratacao":
-                            i = 0;
-                            for(Usuario usuario : (ArrayList<Usuario>)lista.getCliente())
-                            {
-                                if(usuario.getNome().equals(protocol.getDestinatario().getNome())&&
-                                    usuario.getIp().equals(protocol.getDestinatario().getIp()))
-                                    break;
-                                i++;
-                            }
+                            i = lista.getUsuarioIndex(protocol.getDestinatario());
                             destino = broadcast.get(i);
                             protocol.setDestinatario(null);
                             destino.writeUTF(gson.toJson(protocol));
+                            lServico.remove(protocol.getServico());
                             break;
                         default:
                             break;
@@ -161,6 +156,17 @@ public class ServidorThread {
                     protocol = gson.fromJson(line, Protocolo.class);
                 } while (line != null);
             } catch (IOException ex) {
+                lista.remove(user);
+                lista.remove(os);
+                protocol = new Protocolo("listarUsuarios", lista.getCliente());
+                            for (DataOutputStream cliente : broadcast) {
+                    try {
+                        cliente.writeUTF(gson.toJson(protocol));
+                    } catch (IOException ex1) {
+                        System.out.println("Problema ao enviar");
+                    }
+                }
+                serv.notifica();
                 System.out.println("Cliente desconectado");
             }
         }
