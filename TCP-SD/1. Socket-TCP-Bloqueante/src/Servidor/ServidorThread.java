@@ -147,6 +147,10 @@ public class ServidorThread {
                             protocol.setDestinatario(null);
                             destino.writeUTF(gson.toJson(protocol));
                             lServico.remove(protocol.getServico());
+                            protocol = new Protocolo(lServico.getServicos(), "listarServicos");
+                            for (DataOutputStream cliente : broadcast) {
+                                cliente.writeUTF(gson.toJson(protocol));
+                            }
                             break;
                         default:
                             break;

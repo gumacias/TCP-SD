@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Cliente {
@@ -99,8 +101,19 @@ public class Cliente {
         ArrayList<Usuario> s = lServico.getServEmp(servico).getListaInteressados();
         if(s != null)
             return s;
+        System.out.println("nulo");
         return null;
     }      
+    
+    public void contratacao(Servico servico, Usuario user)
+    {
+        protocolo = new Protocolo(servico, user);
+        try {
+            out.writeUTF(gson.toJson(protocolo));
+        } catch (IOException ex) {
+            System.out.println("Erro ao enviar");
+        }
+    }
     
     private Runnable getMessage = new Runnable() {
         
@@ -151,7 +164,6 @@ public class Cliente {
                 }
             } catch (IOException ex) {
                 System.out.println("Desconectado do servidor");
-                //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
                 System.exit(0);
             }
             

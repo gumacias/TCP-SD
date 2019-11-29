@@ -645,7 +645,7 @@
                 <Container class="javax.swing.JPanel" name="pnServicos1">
                   <Properties>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[140, 150]"/>
+                      <Dimension value="[140, 32767]"/>
                     </Property>
                   </Properties>
 

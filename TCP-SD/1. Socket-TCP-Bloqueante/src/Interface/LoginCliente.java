@@ -11,6 +11,7 @@ import Cliente.Usuario;
 import Servidor.ListaServicos;
 import Servidor.Servico;
 import java.awt.CardLayout;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         atualizaServico("");
     }
 
+    @Override
     public void notifica(String msg) {
         txtChat.setText(txtChat.getText() + msg + "\n");
         txtChat1.setText(txtChat1.getText() + msg + "\n");
@@ -473,7 +475,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
 
         lblSaud1.setText("Bem Vindo!");
 
-        pnServicos1.setMaximumSize(new java.awt.Dimension(140, 150));
+        pnServicos1.setMaximumSize(new java.awt.Dimension(140, 32767));
         scrollServicos1.setViewportView(pnServicos1);
 
         lblOnline1.setText("Clientes Online :");
@@ -780,7 +782,9 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
 
     private void srvClicked(java.awt.event.ActionEvent evt, Servico servico) {
         if (emp) {
-            cliente.getInteressados(servico);
+            java.awt.EventQueue.invokeLater(() -> {
+                new Interessados(cliente.getInteressados(servico), cliente, servico).setVisible(true);
+            });
         } else
             cliente.interesseServico(servico);
     }

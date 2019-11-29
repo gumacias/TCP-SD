@@ -20,6 +20,14 @@ public class Protocolo {
     {
         this.action = "logout";
     }
+    
+    public Protocolo(Servico servico, Usuario user)
+    {
+        this.action = "contratacao";
+        this.servico = servico;
+        this.destinatario = user;
+    }
+    
     public Protocolo(ServEmp serv)
     {
         this.action = "listarInteressados";
