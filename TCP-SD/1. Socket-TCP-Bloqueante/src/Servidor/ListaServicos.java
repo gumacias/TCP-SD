@@ -20,12 +20,37 @@ public class ListaServicos {
 
     public ListaServicos() {
     }
+    
+    public void atualizaInteressados(Servico servico, ArrayList<Usuario> interessados)
+    {
+        for(ServEmp s : listInteresse){
+            if(s.getServico().getCargo().equals(servico.getCargo())&&
+                s.getServico().getDescricao().equals(servico.getDescricao())&&
+                s.getServico().getSalario() == servico.getSalario())
+            {
+                s.setListaInteressados(interessados);
+                return;
+            }
+        }
+        listInteresse.add(new ServEmp(servico, interessados));
+    }
 
     public static synchronized ListaServicos getInstance() {
         if (uniqueInstance == null) {
             uniqueInstance = new ListaServicos();
         }
         return uniqueInstance;
+    }
+    
+    public ServEmp getServEmp(Servico servico)
+    {
+        for(ServEmp s :listInteresse){
+            if(s.getServico().getCargo().equals(servico.getCargo())&&
+                s.getServico().getDescricao().equals(servico.getDescricao())&&
+                s.getServico().getSalario() == servico.getSalario())
+                return s;
+        }
+        return null;
     }
     
     public int getServIndex(Servico servico)

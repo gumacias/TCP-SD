@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class Cliente {
     
@@ -92,6 +93,15 @@ public class Cliente {
             //Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }   
     }
+    
+    public ArrayList<Usuario> getInteressados(Servico servico)
+    {
+        ArrayList<Usuario> s = lServico.getServEmp(servico).getListaInteressados();
+        if(s != null)
+            return s;
+        return null;
+    }      
+    
     private Runnable getMessage = new Runnable() {
         
         public void run() {
@@ -125,6 +135,15 @@ public class Cliente {
                             if(flag)
                                 log.avisa(protocolo.getRemetente(), protocolo.getMensagem());
                             flag = true;
+                            break;
+                        case "listarInteressados":
+                            lServico.atualizaInteressados(protocolo.getServico(),
+                                    protocolo.getInteressados());
+                            break;
+                        case "contratacao":
+                            JOptionPane.showMessageDialog(null,
+                                    "Você foi contratado para a vaga: " +
+                                            protocolo.getServico().getCargo());
                             break;
                         default:
                             break;

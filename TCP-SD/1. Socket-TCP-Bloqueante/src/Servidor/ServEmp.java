@@ -20,6 +20,11 @@ public class ServEmp {
     {
         this.servico = servico;
     }
+    public ServEmp(Servico servico, ArrayList<Usuario> interessados)
+    {
+        this.servico = servico;
+        this.listaInteressados = interessados;
+    }
     
     public void addInteressado(Usuario user)
     {

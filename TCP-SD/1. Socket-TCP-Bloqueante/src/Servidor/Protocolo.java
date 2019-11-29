@@ -132,7 +132,12 @@ public class Protocolo {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
-    
-    
+
+    public ArrayList<Usuario> getInteressados() {
+        return interessados;
+    }
+
+    public void setInteressados(ArrayList<Usuario> interessados) {
+        this.interessados = interessados;
+    }
 }

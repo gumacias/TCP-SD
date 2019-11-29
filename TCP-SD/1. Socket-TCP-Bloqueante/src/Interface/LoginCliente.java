@@ -780,7 +780,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
 
     private void srvClicked(java.awt.event.ActionEvent evt, Servico servico) {
         if (emp) {
-
+            cliente.getInteressados(servico);
         } else
             cliente.interesseServico(servico);
     }
