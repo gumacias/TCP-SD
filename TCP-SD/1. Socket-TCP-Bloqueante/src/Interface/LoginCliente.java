@@ -11,13 +11,16 @@ import Cliente.Usuario;
 import Servidor.ListaServicos;
 import Servidor.Servico;
 import java.awt.CardLayout;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -624,8 +627,16 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     }//GEN-LAST:event_btSair1ActionPerformed
 
     private void btCadastraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastraActionPerformed
-        cliente.cadastrarServico(txtCargo.getText(), Float.parseFloat(txtSalario.getText()),
+        try{
+            System.out.println("Aa: "+ txtSalario.getText().replace(",", "."));
+            float sal = Float.parseFloat(txtSalario.getText().replace(",", "."));
+        cliente.cadastrarServico(txtCargo.getText(),
+                sal,
                 txtDescricao.getText());
+        }catch(NumberFormatException e)
+        {
+            System.out.println("Informe apenas números, no formato ##.##");
+        }
         txtCargo.setText("");
         txtSalario.setText("");
         txtDescricao.setText("");
@@ -847,7 +858,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     private javax.swing.JFormattedTextField txtPorta;
     private javax.swing.JFormattedTextField txtSalario;
     // End of variables declaration//GEN-END:variables
-
+        
     public void avisa(Usuario user, String msg) {
         MsgDireta m = new MsgDireta(user, cliente);
         m.setVisible(true);
