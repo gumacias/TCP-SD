@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 public class LoginCliente extends javax.swing.JFrame implements AttCli {
 
     boolean emp;
+    Usuario user;
 
     @Override
     public void notifica() {
@@ -69,7 +70,8 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
     public void atualizaServico() {
         pnServicos.removeAll();
         lServico.getServicos().forEach((servico) -> {
-            pnServicos.add(addServico((Servico) servico));
+            if(Servico.isEmp((Servico)servico, user))
+                pnServicos.add(addServico((Servico) servico));
         });
         pnServicos.revalidate();
         pnServicos.repaint();
@@ -143,13 +145,13 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
         btEnviar1 = new javax.swing.JButton();
         btSair1 = new javax.swing.JButton();
         lblSaud1 = new javax.swing.JLabel();
-        scrollServicos1 = new javax.swing.JScrollPane();
-        pnServicos1 = new javax.swing.JPanel();
         lblOnline1 = new javax.swing.JLabel();
         scrollClientes1 = new javax.swing.JScrollPane();
         pnClientes1 = new javax.swing.JPanel();
         btAtualizar = new javax.swing.JButton();
         txtBusca = new javax.swing.JTextField();
+        scrollServicos1 = new javax.swing.JScrollPane();
+        pnServicos1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -475,9 +477,6 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
 
         lblSaud1.setText("Bem Vindo!");
 
-        pnServicos1.setMaximumSize(new java.awt.Dimension(140, 32767));
-        scrollServicos1.setViewportView(pnServicos1);
-
         lblOnline1.setText("Clientes Online :");
 
         pnClientes1.setMaximumSize(new java.awt.Dimension(145, 32767));
@@ -491,6 +490,8 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
             }
         });
 
+        scrollServicos1.setViewportView(pnServicos1);
+
         javax.swing.GroupLayout pnPrincipalLayout = new javax.swing.GroupLayout(pnPrincipal);
         pnPrincipal.setLayout(pnPrincipalLayout);
         pnPrincipalLayout.setHorizontalGroup(
@@ -501,10 +502,10 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                     .addGroup(pnPrincipalLayout.createSequentialGroup()
                         .addGroup(pnPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnPrincipalLayout.createSequentialGroup()
-                                .addComponent(txtBusca)
+                                .addComponent(txtBusca, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btAtualizar))
-                            .addComponent(scrollServicos1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(scrollServicos1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnChat1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblSaud1))
@@ -561,6 +562,9 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                         txtIp.getText(), Integer.parseInt(txtPorta.getText()),
                         "empregador", this);
                 emp = true;
+                user = new Usuario(txtNome.getText(),
+                        cliente.clientSocket.getLocalAddress().toString().replace("/", ""),
+                        cliente.clientSocket.getLocalPort(), "empregador");
                 cl.show(pnTela, "emp");
             } else {
                 cliente = new Cliente(txtNome.getText(),
@@ -568,6 +572,9 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
                         "empregado", this);
                 emp = false;
                 cl.show(pnTela, "main");
+                user = new Usuario(txtNome.getText(),
+                        cliente.clientSocket.getLocalAddress().toString().replace("/", ""),
+                        cliente.clientSocket.getLocalPort(), "empregado");
             }
 
         } else {

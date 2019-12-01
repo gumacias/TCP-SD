@@ -39,6 +39,7 @@ public class Interessados extends javax.swing.JFrame {
 
                 private void btInteressado(ActionEvent evt, Usuario user) {
                     cliente.contratacao(servico, user);
+                    
                 }
         });
         }
@@ -58,7 +59,7 @@ public class Interessados extends javax.swing.JFrame {
         scrollInteressados = new javax.swing.JScrollPane();
         pnInteressados = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblInteressados.setText("Interessados:");
 

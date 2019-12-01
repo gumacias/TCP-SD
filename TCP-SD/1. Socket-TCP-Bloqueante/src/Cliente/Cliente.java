@@ -21,7 +21,7 @@ public class Cliente {
     DataInputStream in = null;                  // cria um duto de entrada
     DataOutputStream out = null;
     String receber;
-    Socket clientSocket = null;
+    public Socket clientSocket = null;
     boolean flagSair = false;
     public boolean flagMsg = false;
     Gson gson = new Gson();
@@ -156,7 +156,10 @@ public class Cliente {
                         case "contratacao":
                             JOptionPane.showMessageDialog(null,
                                     "Você foi contratado para a vaga: " +
-                                            protocolo.getServico().getCargo());
+                                            protocolo.getServico().getCargo()+
+                                            "\nEntre em contato com: "+
+                                            protocolo.getServico().getEmpregador().getNome()+
+                                            " para mais informações");
                             break;
                         default:
                             break;

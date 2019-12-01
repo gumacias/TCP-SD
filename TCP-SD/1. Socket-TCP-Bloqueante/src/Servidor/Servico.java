@@ -63,4 +63,11 @@ public class Servico {
         this.empregador = empregador;
     }
     
+    public static boolean isEmp(Servico servico, Usuario empregador)
+    {
+        return servico.getEmpregador().getNome().equals(empregador.getNome())&&
+                servico.getEmpregador().getIp().equals(empregador.getIp())&&
+                servico.getEmpregador().getPorta() == empregador.getPorta();
+    }
+    
 }

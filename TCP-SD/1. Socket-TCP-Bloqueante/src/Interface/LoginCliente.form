@@ -508,11 +508,11 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="txtBusca" max="32767" attributes="0"/>
+                                      <Component id="txtBusca" pref="83" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btAtualizar" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="scrollServicos1" min="-2" pref="154" max="-2" attributes="0"/>
+                                  <Component id="scrollServicos1" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="pnChat1" min="-2" max="-2" attributes="0"/>
@@ -638,21 +638,6 @@
                 <Property name="text" type="java.lang.String" value="Bem Vindo!"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JScrollPane" name="scrollServicos1">
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="pnServicos1">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[140, 32767]"/>
-                    </Property>
-                  </Properties>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
-                </Container>
-              </SubComponents>
-            </Container>
             <Component class="javax.swing.JLabel" name="lblOnline1">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clientes Online :"/>
@@ -686,6 +671,16 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtBusca">
             </Component>
+            <Container class="javax.swing.JScrollPane" name="scrollServicos1">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="pnServicos1">
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+                </Container>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
       </SubComponents>
