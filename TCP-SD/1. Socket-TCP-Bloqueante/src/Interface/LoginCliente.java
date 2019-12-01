@@ -342,7 +342,7 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
             }
         });
 
-        txtSalario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.##"))));
+        txtSalario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         txtSalario.setNextFocusableComponent(txtDescricao);
 
         btAtualiza.setText("Atualizar");

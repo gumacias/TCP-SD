@@ -18,31 +18,25 @@ import javax.swing.JButton;
  */
 public class Interessados extends javax.swing.JFrame {
 
+    Servico servico;
     Cliente cliente;
     /**
      * Creates new form Interessados
      * @param users
      * @param cliente
+     * @param servico
      */
     public Interessados(ArrayList <Usuario> users, Cliente cliente, Servico servico) {
         this.cliente = cliente;
+        this.servico = servico;
         initComponents();
-        for(Usuario user: users)
-        {
+        users.forEach((user) -> {
             JButton bt = new JButton(user.getNome());
             pnInteressados.add(bt);
-            bt.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            bt.addActionListener((java.awt.event.ActionEvent evt) -> {
                 btInteressado(evt, user);
-            }
-
-                private void btInteressado(ActionEvent evt, Usuario user) {
-                    cliente.contratacao(servico, user);
-                    
-                }
+            });
         });
-        }
     }
 
     /**
@@ -100,7 +94,12 @@ public class Interessados extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
+    private void btInteressado(ActionEvent evt, Usuario user) {
+        cliente.contratacao(servico, user);
+        this.dispose();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblInteressados;
