@@ -628,7 +628,6 @@ public class LoginCliente extends javax.swing.JFrame implements AttCli {
 
     private void btCadastraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastraActionPerformed
         try{
-            System.out.println("Aa: "+ txtSalario.getText().replace(",", "."));
             float sal = Float.parseFloat(txtSalario.getText().replace(",", "."));
         cliente.cadastrarServico(txtCargo.getText(),
                 sal,
